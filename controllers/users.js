@@ -5,8 +5,12 @@ const generateToken = require('../helpers/token')
 
 async function createNewUser(req, res, next) {
   const { email, password } = _.pick(req.body, ['email', 'password'])
-  const user = new User({ email, password })
   try {
+    const foundUser = await User.findOne({ email })
+    if (foundUser) {
+      return res.status(403).json({ emailTaken: true })
+    }
+    const user = new User({ email, password })
     const createdUser = await user.save()
     if (createdUser) {
       const token = generateToken(createdUser)

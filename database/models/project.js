@@ -11,7 +11,6 @@ const projectSchema = new Schema({
     maxlength: 50
   },
   owner: {
-    required: true,
     type: Schema.Types.ObjectId,
     ref: 'user'
   },

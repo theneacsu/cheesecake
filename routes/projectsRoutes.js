@@ -22,10 +22,10 @@ router
   )
 
 router
-  .route('/project/:title')
+  .route('/project/:projectTitle')
   .get(
     verifyToken(),
-    ProjectsController.getUserProjectByTitle
+    ProjectsController.getProjectByTitle
   )
 
 module.exports = router

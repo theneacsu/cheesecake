@@ -12,19 +12,19 @@ async function getUserProjects(req, res, next) {
   }
 }
 
-async function getUserProjectByTitle(req, res, next) {
+async function getProjectByTitle(req, res, next) {
   const userId = req.userId 
-  const projectTitle = decodeURI(req.params.title)
+  const projectTitle = decodeURI(req.params.projectTitle)
   try {
     const user = await User.findById(userId).populate('projects')
-    const project = user.projects.find(project => {
-      console.log(projectTitle, project.title)
-      return project.title === projectTitle
-    })
-    if (project) {
-      return res.status(200).json({ projectFound: true, project })
+    if (user) {
+      const project = user.projects.find(project => project.title === projectTitle)
+      if (project) {
+        const projectWithTasks = await Project.findById(project.id).populate('tasks')
+        return res.status(200).json({ projectFound: true, project: projectWithTasks })
+      }
+      return res.status(404).json({ projectNotFound: true })
     }
-    return res.status(404).json({ projectNotFound: true })
   } catch (err) {
     next(err)
   }
@@ -32,16 +32,26 @@ async function getUserProjectByTitle(req, res, next) {
 
 async function createProject(req, res, next) {
   const projectData = _.pick(req.body, ['title'])
-  const project = new Project(projectData)
+  
   try {
-    const user = await User.findById(req.userId)
+    const user = await User.findById(req.userId).populate('projects')
+    const takenProjectTitle = user.projects.find(prj => prj.title === projectData.title)
+
+    if (takenProjectTitle) {
+      return res.status(403).json({ projectTitleTaken: true })
+    }
+
+    const project = new Project(projectData)
     project.owner = user
-    await project.save()
-  
-    user.projects.push(project)
-    await user.save()
-  
-    return res.status(201).json({ projectCreated: true, project })
+    
+    const savedProject = await project.save()
+
+    user.projects.push(savedProject)
+    const savedUser = await user.save()
+
+    const displayedProject = await Project.findById(savedProject.id).populate('tasks')
+
+    return res.status(201).json({ projectCreated: true, project: displayedProject })
   } catch (err) {
     next(err)
   }
@@ -49,6 +59,6 @@ async function createProject(req, res, next) {
 
 module.exports = {
   getUserProjects,
-  getUserProjectByTitle,
+  getProjectByTitle,
   createProject
 }

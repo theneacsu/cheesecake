@@ -17,12 +17,10 @@ const taskSchema = new Schema({
     maxlength: 20
   },
   correspondingProject: {
-    required: true,
     type: Schema.Types.ObjectId,
     ref: 'project'
   },
   createdBy: {
-    required: true,
     type: Schema.Types.ObjectId,
     ref: 'user'
   }

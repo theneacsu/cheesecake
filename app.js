@@ -4,6 +4,7 @@ require('./database/mongoose-config')
 const loggerMiddleware = require('./middleware/logger/logger')
 const rootRoutes = require('./routes/rootRoutes')
 const projectsRoutes = require('./routes/projectsRoutes')
+const tasksRoutes = require('./routes/tasksRoutes')
 const notFoundMiddleware = require('./middleware/error/notFound')
 const catchAllErrorsMiddleware = require('./middleware/error/catchAllErrors')
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 app.use('/', rootRoutes)
 app.use('/projects', projectsRoutes)
+app.use('/projects/project', tasksRoutes)
 
 app.use(notFoundMiddleware)
 app.use(catchAllErrorsMiddleware)
