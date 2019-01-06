@@ -11,18 +11,7 @@ const loginUserSchema = joi.object().keys({
   password: joi.string().min(5).max(25).required()
 })
 
-function validateBody(schema) {
-  return function (req, res, next) {
-    const result = joi.validate(req.body, schema)
-    if (result.error) {
-      return res.status(400).json({ error: result.error })
-    }
-    next()
-  }
-}
-
 module.exports = {
   registerUserSchema,
-  loginUserSchema,
-  validateBody
+  loginUserSchema
 }

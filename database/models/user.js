@@ -16,7 +16,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 25,
+    maxlength: 60,
   },
   projects: {
     type: [
@@ -28,13 +28,19 @@ const userSchema = new Schema({
   }
 })
 
-userSchema.pre('save', async function() {
+userSchema.pre('save', async function(next) {
   const user = this
-  if (user.isModified('password')) {
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(user.password, salt)
-    user.password = hashedPassword
+
+  if (!user.isModified('password')) {
+    return next()
   }
+
+  console.log(user.isModified('password'))
+
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(user.password, salt)
+  user.password = hashedPassword
+  next()
 })
 
 const User = mongoose.model('user', userSchema)
