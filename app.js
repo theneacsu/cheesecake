@@ -2,6 +2,7 @@ const express = require('express')
 require('dotenv').config()
 require('./database/mongoose-config')
 const loggerMiddleware = require('./middleware/logger/logger')
+const rootRoutes = require('./routes/rootRoutes')
 const notFoundMiddleware = require('./middleware/error/notFound')
 const catchAllErrorsMiddleware = require('./middleware/error/catchAllErrors')
 
@@ -13,6 +14,8 @@ app.use(loggerMiddleware)
 app.get('/', (req, res) => {
   res.status(200).json({ works: true })
 })
+
+app.use('/', rootRoutes)
 
 app.use(notFoundMiddleware)
 app.use(catchAllErrorsMiddleware)

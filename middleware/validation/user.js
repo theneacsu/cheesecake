@@ -1,0 +1,28 @@
+const joi = require('joi')
+
+const registerUserSchema = joi.object().keys({
+  email: joi.string().email().min(5).max(60).required(),
+  password: joi.string().min(5).max(25).required(),
+  confirmedPassword: joi.any().valid(joi.ref('password')).required()
+})
+
+const loginUserSchema = joi.object().keys({
+  email: joi.string().email().min(5).max(60).required(),
+  password: joi.string().min(5).max(25).required()
+})
+
+function validateBody(schema) {
+  return function (req, res, next) {
+    const result = joi.validate(req.body, schema)
+    if (result.error) {
+      return res.status(400).json({ error: result.error })
+    }
+    next()
+  }
+}
+
+module.exports = {
+  registerUserSchema,
+  loginUserSchema,
+  validateBody
+}
