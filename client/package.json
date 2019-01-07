@@ -5,7 +5,7 @@
   "dependencies": {
     "axios": "0.18.0",
     "flow-bin": "0.89.0",
-    "flow-typed": "^2.5.1",
+    "flow-typed": "2.5.1",
     "jest": "23.6.0",
     "react": "16.7.0",
     "react-dom": "16.7.0",
