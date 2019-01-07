@@ -76,9 +76,19 @@ async function deleteTaskById(req, res, next) {
   return res.status(403).json({ invalidTaskId: true })
 }
 
+async function editTaskById(req, res, next) {
+  const { title, category } = req.body
+  const task = await Task.findOneAndUpdate({ _id: req.params.taskId }, { title, category }, { new: true })
+  if (task) {
+    return res.status(200).json({ taskUpdated: true, taskId: task.id })
+  }
+  return res.status(403).json({ invalidTaskId: true })
+}
+
 module.exports = {
   getProjectTasks,
   createTask,
   getTaskById,
-  deleteTaskById
+  deleteTaskById,
+  editTaskById
 }
