@@ -1,6 +1,7 @@
 const _ = require('lodash')
 const User = require('../database/models/user')
 const Project = require('../database/models/project')
+const Task = require('../database/models/task')
 
 async function getUserProjects(req, res, next) {
   const id = req.userId
@@ -57,8 +58,28 @@ async function createProject(req, res, next) {
   }
 }
 
+async function deleteProjectByTitle(req, res, next) {
+  const projectTitle = decodeURI(req.params.projectTitle)
+  try {
+    const user = await User.findById(req.userId).populate('projects')
+    const project = user.projects.find(prj => prj.title === projectTitle)
+    if (project) {
+      const projectWithTask = await Project.findById(project.id).populate('tasks')
+      projectWithTask.tasks.forEach(async (task) => {
+        const taskToRemove = await Task.findById(task.id)
+        taskToRemove.remove()
+      })
+      project.remove()
+      return res.status(200).json({ projectDeleted: true, projectTitle })
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = {
   getUserProjects,
   getProjectByTitle,
-  createProject
+  createProject,
+  deleteProjectByTitle
 }

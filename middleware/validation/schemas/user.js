@@ -11,7 +11,12 @@ const loginUserSchema = joi.object().keys({
   password: joi.string().min(5).max(25).required()
 })
 
+const deleteUserSchema = joi.object().keys({
+  email: joi.string().email().min(5).max(60).required()
+})
+
 module.exports = {
   registerUserSchema,
-  loginUserSchema
+  loginUserSchema,
+  deleteUserSchema
 }

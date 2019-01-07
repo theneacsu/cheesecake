@@ -25,5 +25,9 @@ router
     verifyToken(),
     TasksController.getTaskById
   )
+  .delete(
+    verifyToken(),
+    TasksController.deleteTaskById
+  )
 
 module.exports = router

@@ -68,8 +68,17 @@ async function getTaskById(req, res, next) {
   }
 }
 
+async function deleteTaskById(req, res, next) {
+  const task = await Task.findOneAndDelete(req.params.taskId)
+  if (task) {
+    return res.status(200).json({ taskDeleted: true, taskId: req.params.taskId })
+  }
+  return res.status(403).json({ invalidTaskId: true })
+}
+
 module.exports = {
   getProjectTasks,
   createTask,
-  getTaskById
+  getTaskById,
+  deleteTaskById
 }

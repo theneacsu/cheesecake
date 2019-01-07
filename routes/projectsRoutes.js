@@ -27,5 +27,9 @@ router
     verifyToken(),
     ProjectsController.getProjectByTitle
   )
+  .delete(
+    verifyToken(),
+    ProjectsController.deleteProjectByTitle
+  )
 
 module.exports = router

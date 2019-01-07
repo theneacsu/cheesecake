@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
+const Project = require('./project')
+const Task = require('./task')
 
 const Schema = mongoose.Schema
 
