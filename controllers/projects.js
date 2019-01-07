@@ -77,9 +77,27 @@ async function deleteProjectByTitle(req, res, next) {
   }
 }
 
+async function editProjectByTitle(req, res, next) {
+  const projectTitle = decodeURI(req.params.projectTitle)
+  const newTitle = req.body.title
+  try {
+    const user = await User.findById(req.userId).populate('projects')
+    const project = user.projects.find(prj => prj.title = projectTitle)
+    if (project) {
+      project.title = newTitle
+      const savedProject = await project.save()
+      return res.status(200).json({ projectNewTitle: newTitle, updated: true })
+    }
+    return res.status(403).json({ projectDoesNotExist: true })
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = {
   getUserProjects,
   getProjectByTitle,
   createProject,
-  deleteProjectByTitle
+  deleteProjectByTitle,
+  editProjectByTitle
 }
