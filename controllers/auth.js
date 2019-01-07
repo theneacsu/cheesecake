@@ -11,7 +11,10 @@ async function loginUser(req, res, next) {
       const isPasswordMatch = await bcrypt.compare(password, foundUser.password)
       if (isPasswordMatch) {
         const token = generateToken(foundUser)
-        return res.status(200).json({ loggedIn: true, user: foundUser, token })
+        return res.status(200).json({ loggedIn: true, user: {
+          id: foundUser.id,
+          email
+        }, token })
       }
     }
     return res.status(400).json({ wrongCredentials: true })

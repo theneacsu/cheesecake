@@ -1,6 +1,6 @@
 const express = require('express')
 const UserController = require('../controllers/users')
-const { registerUserSchema, deleteUserSchema } = require('../middleware/validation/schemas/user')
+const { registerUserSchema, deleteUserSchema, editUserSchema } = require('../middleware/validation/schemas/user')
 const validateBody = require('../middleware/validation/validateBody')
 const verifyToken = require('../middleware/auth/token')
 
@@ -19,6 +19,14 @@ router
     verifyToken(),
     validateBody(deleteUserSchema),
     UserController.deleteUserAccount
+  )
+
+router
+  .route('/user/:userId')
+  .patch(
+    verifyToken(),
+    validateBody(editUserSchema),
+    UserController.editUserAccount
   )
 
 module.exports = router

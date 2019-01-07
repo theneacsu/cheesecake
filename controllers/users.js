@@ -3,6 +3,7 @@ const User = require('../database/models/user')
 const generateToken = require('../helpers/token')
 const Project = require('../database/models/project.js')
 const Task = require('../database/models/task.js')
+const bcrypt = require('bcryptjs')
 
 async function createNewUser(req, res, next) {
   const { email, password } = _.pick(req.body, ['email', 'password'])
@@ -15,9 +16,34 @@ async function createNewUser(req, res, next) {
     const createdUser = await user.save()
     if (createdUser) {
       const token = generateToken(createdUser)
-      return res.status(201).json({ created: true, user: createdUser, token })
+      return res.status(201).json({ created: true, user: {
+        id: createdUser.id,
+        email
+      }, token })
     }
     return res.status(500).json({ userNotCreated: true })
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function editUserAccount(req, res, next) {
+  const userId = req.params.userId
+  const { email, oldPassword, newPassword } = req.body 
+  try {
+    const user = await User.findById(userId)
+    if (user) {
+      const isOldPasswordMatch = await bcrypt.compare(oldPassword, user.password)
+      if (isOldPasswordMatch){
+        user.email = email
+        user.password = newPassword
+        const savedUser = await user.save()
+        return res.status(200).json({ userUpdated: true, email: savedUser.email })
+      } else {
+        return res.status(403).json({ oldPasswordIncorrect: true })
+      }
+    }
+    return res.status(403).json({ userIdNotFound: true })
   } catch (err) {
     next(err)
   }
@@ -46,5 +72,6 @@ async function deleteUserAccount(req, res, next) {
 
 module.exports = {
   createNewUser,
-  deleteUserAccount
+  deleteUserAccount,
+  editUserAccount
 }

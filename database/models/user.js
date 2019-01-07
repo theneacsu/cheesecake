@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
 const Project = require('./project')
 const Task = require('./task')
+const hashPassword = require('../../helpers/hashPassword')
 
 const Schema = mongoose.Schema
 
@@ -36,10 +36,7 @@ userSchema.pre('save', async function(next) {
   if (!user.isModified('password')) {
     return next()
   }
-
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(user.password, salt)
-  user.password = hashedPassword
+  user.password = await hashPassword(user)
   next()
 })
 
