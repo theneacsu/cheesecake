@@ -7,7 +7,7 @@ async function getUserProjects(req, res, next) {
   const id = req.userId
   try {
     const user = await User.findById(id).populate('projects')
-    return res.status(200).json({ id, projects: user.projects })
+    return res.status(200).json({ id, projects: user.projects, user: { id: user.id, email: user.email } })
   } catch (err) {
     next(err)
   }
