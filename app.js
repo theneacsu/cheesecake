@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 app.use('/', rootRoutes)
 app.use('/users', usersRoutes)
 app.use('/projects', projectsRoutes)
-app.use('/projects/project', tasksRoutes)
+app.use('/projects', tasksRoutes)
 
 app.use(notFoundMiddleware)
 app.use(catchAllErrorsMiddleware)

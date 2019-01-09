@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 class Dashboard extends Component {
   state = {
@@ -11,15 +12,21 @@ class Dashboard extends Component {
     return (
       <div>
         <h1>Logged in as: {this.props.auth.email}</h1>
-        {this.state.projects.length > 0 ? (
-          this.state.projects.map(project => (
-            <p key={project.id}>{project.title}</p>
-          ))
-        ) : (
+        <Link to={`/dashboard/projects/new`}>Create a project</Link>
+        {this.props.projects.length > 0 ? (
           <>
-            <p>Get started by adding a project</p>
-            <button>Create a project</button>
+            <h2>Projects:</h2>
+            {this.props.projects.map(project => (
+              <Link
+                to={`/dashboard/projects/${project._id}`}
+                key={project.title}
+              >
+                {project.title}
+              </Link>
+            ))}
           </>
+        ) : (
+          <p>Get started by adding a project</p>
         )}
       </div>
     )

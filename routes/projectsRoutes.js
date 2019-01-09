@@ -7,34 +7,34 @@ const { createProjectSchema, editProjectSchema } = require('../middleware/valida
 const router = express.Router()
 
 router
-  .route('/all')
-  .get(
-    verifyToken(),
-    ProjectsController.getUserProjects
-  )
-
-router
   .route('/new')
   .post(
     verifyToken(),
     validateBody(createProjectSchema),
-    ProjectsController.createProject
+    ProjectsController.createNewProject
   )
 
 router
-  .route('/project/:projectTitle')
+  .route('/all')
   .get(
     verifyToken(),
-    ProjectsController.getProjectByTitle
+    ProjectsController.getAllUserProjects
   )
-  .delete(
+
+router
+  .route('/:projectId')
+  .get(
     verifyToken(),
-    ProjectsController.deleteProjectByTitle
+    ProjectsController.getProjectById
   )
   .patch(
     verifyToken(),
     validateBody(editProjectSchema),
-    ProjectsController.editProjectByTitle
+    ProjectsController.editProjectById
   )
-
+  .delete(
+    verifyToken(),
+    ProjectsController.deleteProjectById
+  )
+  
 module.exports = router

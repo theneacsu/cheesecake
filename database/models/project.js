@@ -9,6 +9,11 @@ const projectSchema = new Schema({
     minlength: 3,
     maxlength: 50
   },
+  description: {
+    type: String,
+    minlength: 3,
+    maxlength: 50  
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'user'

@@ -2,44 +2,16 @@ const _ = require('lodash')
 const User = require('../database/models/user')
 const Project = require('../database/models/project')
 const Task = require('../database/models/task')
+const { ObjectId } = require('mongoose').Types
 
-async function getUserProjects(req, res, next) {
-  const id = req.userId
-  try {
-    const user = await User.findById(id).populate('projects')
-    return res.status(200).json({ id, projects: user.projects, user: { id: user.id, email: user.email } })
-  } catch (err) {
-    next(err)
-  }
-}
-
-async function getProjectByTitle(req, res, next) {
-  const userId = req.userId 
-  const projectTitle = decodeURI(req.params.projectTitle)
-  try {
-    const user = await User.findById(userId).populate('projects')
-    if (user) {
-      const project = user.projects.find(project => project.title === projectTitle)
-      if (project) {
-        const projectWithTasks = await Project.findById(project.id).populate('tasks')
-        return res.status(200).json({ projectFound: true, project: projectWithTasks })
-      }
-      return res.status(404).json({ projectNotFound: true })
-    }
-  } catch (err) {
-    next(err)
-  }
-}
-
-async function createProject(req, res, next) {
-  const projectData = _.pick(req.body, ['title'])
-  
+async function createNewProject(req, res, next) {
+  const projectData = _.pick(req.body, ['title', 'description'])
   try {
     const user = await User.findById(req.userId).populate('projects')
     const takenProjectTitle = user.projects.find(prj => prj.title === projectData.title)
 
     if (takenProjectTitle) {
-      return res.status(403).json({ projectTitleTaken: true })
+      return res.status(403).json({ projectTitleTaken: true, projectTitle: projectData.title })
     }
 
     const project = new Project(projectData)
@@ -58,46 +30,80 @@ async function createProject(req, res, next) {
   }
 }
 
-async function deleteProjectByTitle(req, res, next) {
-  const projectTitle = decodeURI(req.params.projectTitle)
+async function getAllUserProjects(req, res, next) {
+  const { userId } = req
   try {
-    const user = await User.findById(req.userId).populate('projects')
-    const project = user.projects.find(prj => prj.title === projectTitle)
-    if (project) {
-      const projectWithTask = await Project.findById(project.id).populate('tasks')
-      projectWithTask.tasks.forEach(async (task) => {
-        const taskToRemove = await Task.findById(task.id)
-        taskToRemove.remove()
-      })
-      project.remove()
-      return res.status(200).json({ projectDeleted: true, projectTitle })
+    const user = await User.findById(userId).populate('projects')
+    if (user) {
+      return res.status(200).json({ userId, email: user.email, projects: user.projects })
     }
+    return res.status(403).json({ userNotFound: true, userId })
   } catch (err) {
     next(err)
   }
 }
 
-async function editProjectByTitle(req, res, next) {
-  const projectTitle = decodeURI(req.params.projectTitle)
-  const newTitle = req.body.title
+async function getProjectById(req, res, next) {
+  const { projectId } = req.params
+  try {
+    const project = await Project.findById(projectId).populate('tasks')
+
+    if (project) {
+      return res.status(200).json({ projectFound: true, project, projectId })
+    }
+  
+    return res.status(403).json({ projectNotFound: true, projectId })
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function editProjectById(req, res, next) {
+  const { projectId } = req.params
+  const { newTitle, newDescription } = req.body
   try {
     const user = await User.findById(req.userId).populate('projects')
-    const project = user.projects.find(prj => prj.title = projectTitle)
+    const project = user.projects.find(prj => prj.id = projectId)
     if (project) {
       project.title = newTitle
+      if (newDescription) {
+        project.description = newDescription
+      }
       const savedProject = await project.save()
-      return res.status(200).json({ projectNewTitle: newTitle, updated: true })
+      return res.status(200).json({ updated: true, projectId, project })
     }
-    return res.status(403).json({ projectDoesNotExist: true })
+    return res.status(403).json({ projectIdNotFound: true, projectId })
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function deleteProjectById(req, res, next) {
+  const { userId } = req
+  const { projectId } = req.params
+  try {
+    const project = await Project.findById(projectId).populate('tasks')
+    if (project) {
+      project.tasks.forEach(async (task) => {
+        const taskToRemove = await Task.findById(task.id)
+        taskToRemove.remove()
+      })
+      project.remove()
+
+      await User.updateOne( { _id: userId }, { $pull: { projects: projectId } }, { safe: true })
+      
+      return res.status(200).json({ projectDeleted: true, projectId })
+    }
+    return res.status(403).json({ projectDeleted: false, projectNotFoud: true, projectId })
   } catch (err) {
     next(err)
   }
 }
 
 module.exports = {
-  getUserProjects,
-  getProjectByTitle,
-  createProject,
-  deleteProjectByTitle,
-  editProjectByTitle
+  createNewProject,
+  getAllUserProjects,
+  getProjectById,
+  editProjectById,
+  deleteProjectById
 }

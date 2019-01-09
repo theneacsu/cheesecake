@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logout } from '../../../actions/auth/auth'
+import { startLogout } from '../../../actions/auth/auth'
 
 const Header = props => (
   <div>
@@ -10,7 +10,7 @@ const Header = props => (
       <Link
         to="/"
         onClick={() => {
-          props.logout()
+          props.startLogout()
           localStorage.setItem('token-clone57', '')
           localStorage.setItem('email-clone57', '')
           localStorage.setItem('id-clone57', '')
@@ -23,7 +23,7 @@ const Header = props => (
 )
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
+  startLogout: () => dispatch(startLogout())
 })
 
 const mapStateToProps = state => ({

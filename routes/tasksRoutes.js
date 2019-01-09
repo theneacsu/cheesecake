@@ -2,38 +2,39 @@ const express = require('express')
 const TasksController = require('../controllers/tasks')
 const verifyToken = require('../middleware/auth/token')
 const validateBody = require('../middleware/validation/validateBody')
-const { editTaskSchema } = require('../middleware/validation/schemas/task')
+const { editTaskSchema, createTaskSchema } = require('../middleware/validation/schemas/task')
 
 const router = express.Router()
 
 router
-  .route('/:projectTitle/tasks/all')
+  .route('/:projectId/tasks/all')
   .get(
     verifyToken(),
     TasksController.getProjectTasks
   )
 
 router
-  .route('/:projectTitle/tasks/new')
+  .route('/:projectId/tasks/new')
   .post(
     verifyToken(),
+    validateBody(createTaskSchema),
     TasksController.createTask
   )
 
 router
-  .route('/:projectTitle/tasks/task/:taskId')
+  .route('/:projectId/tasks/:taskId')
   .get(
     verifyToken(),
     TasksController.getTaskById
-  )
-  .delete(
-    verifyToken(),
-    TasksController.deleteTaskById
   )
   .patch(
     verifyToken(),
     validateBody(editTaskSchema),
     TasksController.editTaskById
+  )
+  .delete(
+    verifyToken(),
+    TasksController.deleteTaskById
   )
 
 module.exports = router
