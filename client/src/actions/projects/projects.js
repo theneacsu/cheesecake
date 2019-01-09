@@ -22,7 +22,11 @@ const deleteProject = id => ({
 
 const startDeleteProject = id => {
   return async (dispatch, getState) => {
-    const result = await axios.delete('')
+    const token = getState().auth.token
+    const results = await axios.delete(`/projects/${id}`, {
+      headers: { auth: token }
+    })
+    dispatch(deleteProject(results.data.projectId))
   }
 }
 
@@ -50,4 +54,10 @@ const setProjects = projects => ({
   }
 })
 
-export { setProjects, addProject, startAddProject, removeProjectsOnLogout }
+export {
+  setProjects,
+  addProject,
+  startAddProject,
+  removeProjectsOnLogout,
+  startDeleteProject
+}

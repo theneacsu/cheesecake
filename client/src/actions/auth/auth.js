@@ -36,7 +36,8 @@ const startLogout = () => {
 const automaticLogin = () => {
   return async (dispatch, getState) => {
     const token = localStorage.getItem('token-clone57')
-    const results = await axios.get('/users/user/allDetails', {
+    const userId = localStorage.getItem('id-clone57')
+    const results = await axios.get(`/users/${userId}`, {
       headers: { auth: token }
     })
     const { email, id, projects, tasks } = results.data
@@ -46,43 +47,55 @@ const automaticLogin = () => {
   }
 }
 
-const startRegister = ({ email, password, confirmedPassword }) => {
+const startRegister = userCredentials => {
   return async (dispatch, getState) => {
-    axios
-      .post('/users/register', { email, password, confirmedPassword })
-      .then(res => {
-        const { token } = res.data
-        const { email, id } = res.data.user
-        dispatch(login({ token, email, id }))
-        localStorage.setItem('token-clone57', res.data.token)
-        localStorage.setItem('id-clone57', res.data.user.id)
-        localStorage.setItem('email-clone57', res.data.user.email)
+    const { password, confirmedPassword } = userCredentials
+    const emailAddress = userCredentials.email
+    try {
+      const results = await axios.post('/register', {
+        email: emailAddress,
+        password,
+        confirmedPassword
       })
-      .catch(err => {
-        dispatch(loginFailed('Email already taken'))
-      })
+
+      console.log(results.data)
+
+      const { token } = results.data
+      const { email, id } = results.data.user
+      dispatch(login({ token, email, id }))
+      localStorage.setItem('token-clone57', token)
+      localStorage.setItem('id-clone57', id)
+      localStorage.setItem('email-clone57', email)
+    } catch (err) {
+      dispatch(loginFailed('Email already taken '))
+    }
   }
 }
 
 const startLogin = userCredentials => {
   return async (dispatch, getState) => {
-    const { email, password } = userCredentials
-    const results = await axios.post('/login', { email, password })
+    try {
+      const { email, password } = userCredentials
+      const results = await axios.post('/login', { email, password })
 
-    const { token } = results.data
+      const { token } = results.data
+      const userId = results.data.user.id
 
-    const resultsAll = await axios.get('/users/user/allDetails', {
-      headers: { auth: token }
-    })
+      const resultsAll = await axios.get(`/users/${userId}`, {
+        headers: { auth: token }
+      })
 
-    const { email: emailAll, id, projects, tasks } = resultsAll.data
-    dispatch(login({ emailAll, id, token }))
-    dispatch(setProjects(projects))
-    dispatch(setTasks(tasks))
+      const { email: emailAll, id, projects, tasks } = resultsAll.data
+      dispatch(login({ email: emailAll, id, token }))
+      dispatch(setProjects(projects))
+      dispatch(setTasks(tasks))
 
-    localStorage.setItem('token-clone57', token)
-    localStorage.setItem('id-clone57', id)
-    localStorage.setItem('email-clone57', email)
+      localStorage.setItem('token-clone57', token)
+      localStorage.setItem('id-clone57', id)
+      localStorage.setItem('email-clone57', email)
+    } catch (err) {
+      dispatch(loginFailed('Wrong credentials'))
+    }
   }
 }
 

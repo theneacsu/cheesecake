@@ -1,7 +1,9 @@
-const getTaskByCategory = (tasks, category, projectId) =>
+const getTasksByCategory = (tasks, category, projectId) =>
   tasks.filter(
     task =>
       task.category === category && task.correspondingProject === projectId
   )
 
-export default getTaskByCategory
+const getCurrentTask = (tasks, id) => tasks.find(task => task._id === id)
+
+export { getTasksByCategory, getCurrentTask }

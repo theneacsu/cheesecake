@@ -7,8 +7,9 @@ import Header from '../project-management-app/components/header/Header'
 import LoginUser from '../project-management-app/components/login-user/LoginUser'
 import PublicRoute from './PublicRoute'
 import PrivateRoute from './PrivateRoute'
-import Project from '../project-management-app/components/Project/Project'
+import Project from '../project-management-app/components/project/Project'
 import CreateProject from '../project-management-app/components/create-project/CreateProject'
+import Task from '../project-management-app/components/task/Task'
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -24,7 +25,15 @@ const AppRouter = () => (
           exact
           component={CreateProject}
         />
-        <PrivateRoute path="/dashboard/projects/:id" component={Project} />
+        <PrivateRoute
+          path="/dashboard/projects/:projectId"
+          component={Project}
+          exact
+        />
+        <PrivateRoute
+          path="/dashboard/projects/:projectId/:taskId"
+          component={Task}
+        />
       </Switch>
     </div>
   </BrowserRouter>

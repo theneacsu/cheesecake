@@ -84,7 +84,7 @@ class RegisterUser extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  startRegister: userData => dispatch(startRegister(userData))
+  startRegister: userCredentials => dispatch(startRegister(userCredentials))
 })
 
 const mapStateToProps = state => ({
