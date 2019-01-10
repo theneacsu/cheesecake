@@ -13,8 +13,13 @@ const taskSchema = new Schema({
     type: String,
     required: true,
     lowercase: true,
-    minlength: 3,
+    minlength: 4,
     maxlength: 20
+  },
+  description: {
+    type: String,
+    minlength: 3,
+    maxlength: 50
   },
   correspondingProject: {
     type: Schema.Types.ObjectId,

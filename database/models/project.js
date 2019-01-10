@@ -10,9 +10,7 @@ const projectSchema = new Schema({
     maxlength: 50
   },
   description: {
-    type: String,
-    minlength: 3,
-    maxlength: 50  
+    type: String 
   },
   owner: {
     type: Schema.Types.ObjectId,

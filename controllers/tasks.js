@@ -25,7 +25,7 @@ async function getProjectTasks(req, res, next) {
 async function createTask(req, res, next) {
   const { userId } = req
   const { projectId } = req.params
-  const taskData = _.pick(req.body, ['title', 'category'])
+  const taskData = _.pick(req.body, ['title', 'category', 'description'])
   try {
     const user = await User.findById(userId).populate('projects')
     if (user) {
@@ -77,14 +77,14 @@ async function getTaskById(req, res, next) {
 async function editTaskById(req, res, next) {
   const { userId } = req
   const { taskId } = req.params
-  const { title, category } = req.body
+  const { title, category, description } = req.body
   try {
     const user = await User.findById(userId)
     if (user) {
       const task = await Task.findById(taskId)
       if (task) {
         if (userId.toString() === task.createdBy.toString()) {
-          const editedTask = await Task.findOneAndUpdate({ _id: taskId }, { title, category }, { new: true })
+          const editedTask = await Task.findOneAndUpdate({ _id: taskId }, { title, category, description }, { new: true })
           return res.status(200).json({ taskUpdated: true, taskId, task: editedTask })
         }
       }

@@ -7,9 +7,9 @@ import { startDeleteProject } from '../../../actions/projects/projects'
 import getCurrentProject from '../../../selectors/projects'
 
 const Project = props => {
-  const { todoTasks, inProgressTasks, completedTasks, needsReworkTasks } = props
   const { title, description } = props.project
   const projectId = props.project._id
+  const { mappedTasksStages } = props
   return (
     <div>
       <h1>{title}</h1>
@@ -17,10 +17,13 @@ const Project = props => {
       <Link to="/dashboard" onClick={() => props.startDeleteProject(projectId)}>
         Delete Project
       </Link>
-      <TaskStage stage="Todo" tasks={todoTasks} />
-      <TaskStage stage="In Progress" tasks={inProgressTasks} />
-      <TaskStage stage="Completed" tasks={completedTasks} />
-      <TaskStage stage="Needs Rework" tasks={needsReworkTasks} />
+      {mappedTasksStages.map(taskStage => (
+        <TaskStage
+          key={taskStage.category}
+          {...taskStage}
+          projectId={projectId}
+        />
+      ))}
     </div>
   )
 }
@@ -30,10 +33,32 @@ const mapStateToProps = (state, props) => {
   const { projectId } = props.match.params
   return {
     project: getCurrentProject(projects, projectId),
-    todoTasks: getTasksByCategory(tasks, 'todo', projectId),
-    inProgressTasks: getTasksByCategory(tasks, 'in_progress', projectId),
-    completedTasks: getTasksByCategory(tasks, 'completed', projectId),
-    needsReworkTasks: getTasksByCategory(tasks, 'needs_rework', projectId)
+    mappedTasksStages: [
+      {
+        stage: 'Todo',
+        category: 'todo',
+        tasks: getTasksByCategory(tasks, 'todo', projectId),
+        options: ['in_progress', 'completed', 'needs_rework']
+      },
+      {
+        stage: 'In Progress',
+        category: 'in_progress',
+        tasks: getTasksByCategory(tasks, 'in_progress', projectId),
+        options: ['todo', 'completed', 'needs_rework']
+      },
+      {
+        stage: 'Completed',
+        category: 'completed',
+        tasks: getTasksByCategory(tasks, 'completed', projectId),
+        options: ['todo', 'in_progress', 'needs_rework']
+      },
+      {
+        stage: 'Needs Rework',
+        category: 'needs_rework',
+        tasks: getTasksByCategory(tasks, 'needs_rework', projectId),
+        options: ['todo', 'in_progress', 'completed']
+      }
+    ]
   }
 }
 

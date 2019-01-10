@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import ProjectOverview from '../project-overview/ProjectOverview'
 
 class Dashboard extends Component {
   state = {
@@ -17,12 +18,7 @@ class Dashboard extends Component {
           <>
             <h2>Projects:</h2>
             {this.props.projects.map(project => (
-              <Link
-                to={`/dashboard/projects/${project._id}`}
-                key={project.title}
-              >
-                {project.title}
-              </Link>
+              <ProjectOverview key={project._id} {...project} />
             ))}
           </>
         ) : (

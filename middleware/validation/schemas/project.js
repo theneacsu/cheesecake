@@ -2,7 +2,7 @@ const joi = require('joi')
 
 const createProjectSchema = joi.object().keys({
   title: joi.string().min(3).max(60).required(),
-  description: joi.string().min(5).max(60)
+  description: joi.any()
 })
 
 const editProjectSchema = joi.object().keys({

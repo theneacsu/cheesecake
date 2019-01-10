@@ -17,7 +17,7 @@ class CreateProject extends Component {
   handleFormSubmit = async e => {
     e.preventDefault()
     const { title, description } = this.state
-    if (title.trim().length > 5 && description.trim().length > 5) {
+    if (title.trim().length > 2) {
       await this.props.startAddProject({ title, description })
       this.props.history.push('/dashboard')
     }
