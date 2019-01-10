@@ -14,6 +14,9 @@ const Project = props => {
     <div>
       <h1>{title}</h1>
       <h3> - {description} - </h3>
+      <Link to={`/dashboard/projects/${projectId}/edit`} onClick={() => {}}>
+        Edit Project
+      </Link>
       <Link to="/dashboard" onClick={() => props.startDeleteProject(projectId)}>
         Delete Project
       </Link>

@@ -9,6 +9,8 @@ import PublicRoute from './PublicRoute'
 import PrivateRoute from './PrivateRoute'
 import Project from '../project-management-app/components/project/Project'
 import CreateProject from '../project-management-app/components/create-project/CreateProject'
+import EditTask from '../project-management-app/components/edit-task/EditTask'
+import EditProject from '../project-management-app/components/edit-project/EditProject'
 import Task from '../project-management-app/components/task/Task'
 
 const AppRouter = () => (
@@ -31,8 +33,17 @@ const AppRouter = () => (
           exact
         />
         <PrivateRoute
+          path="/dashboard/projects/:projectId/edit"
+          component={EditProject}
+        />
+        <PrivateRoute
           path="/dashboard/projects/:projectId/:taskId"
           component={Task}
+          exact
+        />
+        <PrivateRoute
+          path="/dashboard/projects/:projectId/:taskId/edit"
+          component={EditTask}
         />
       </Switch>
     </div>

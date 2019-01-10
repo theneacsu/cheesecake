@@ -65,12 +65,8 @@ async function editProjectById(req, res, next) {
     const user = await User.findById(req.userId).populate('projects')
     const project = user.projects.find(prj => prj.id = projectId)
     if (project) {
-      project.title = newTitle
-      if (newDescription) {
-        project.description = newDescription
-      }
-      const savedProject = await project.save()
-      return res.status(200).json({ updated: true, projectId, project })
+      const updatedProject = await Project.findOneAndUpdate({ _id: projectId }, { title: newTitle, description: newDescription }, { new: true })
+      return res.status(200).json({ updated: true, projectId, project: updatedProject })
     }
     return res.status(403).json({ projectIdNotFound: true, projectId })
   } catch (err) {

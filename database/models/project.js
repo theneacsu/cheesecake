@@ -7,10 +7,11 @@ const projectSchema = new Schema({
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 50
+    maxlength: 100
   },
   description: {
-    type: String 
+    type: String,
+    maxlength: 1000
   },
   owner: {
     type: Schema.Types.ObjectId,
