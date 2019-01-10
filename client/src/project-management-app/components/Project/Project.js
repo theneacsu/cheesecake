@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import TaskStage from '../task-stage/TaskStage'
 import { getTasksByCategory } from '../../../selectors/tasks'
-import { startDeleteProject } from '../../../actions/projects/projects'
 import getCurrentProject from '../../../selectors/projects'
 
 const Project = props => {
@@ -16,9 +15,6 @@ const Project = props => {
       <h3> - {description} - </h3>
       <Link to={`/dashboard/projects/${projectId}/edit`} onClick={() => {}}>
         Edit Project
-      </Link>
-      <Link to="/dashboard" onClick={() => props.startDeleteProject(projectId)}>
-        Delete Project
       </Link>
       {mappedTasksStages.map(taskStage => (
         <TaskStage
@@ -65,11 +61,4 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  startDeleteProject: id => dispatch(startDeleteProject(id))
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Project)
+export default connect(mapStateToProps)(Project)

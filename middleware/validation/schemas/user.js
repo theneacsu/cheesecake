@@ -1,21 +1,21 @@
-const joi = require('joi')
+const Joi = require('joi')
 
-const registerUserSchema = joi.object().keys({
-  email: joi.string().email().min(5).max(60).required(),
-  password: joi.string().min(5).max(25).required(),
-  confirmedPassword: joi.any().valid(joi.ref('password')).required()
+const registerUserSchema = Joi.object().keys({
+  email: Joi.string().email().min(5).max(60).required(),
+  password: Joi.string().min(5).max(25).required(),
+  confirmedPassword: Joi.any().valid(Joi.ref('password')).required()
 })
 
-const loginUserSchema = joi.object().keys({
-  email: joi.string().email().min(5).max(60).required(),
-  password: joi.string().min(5).max(25).required()
+const loginUserSchema = Joi.object().keys({
+  email: Joi.string().email().min(5).max(60).required(),
+  password: Joi.string().min(5).max(25).required()
 })
 
-const editUserSchema = joi.object().keys({
-  newEmail: joi.string().email().min(5).max(60).required(),
-  oldPassword: joi.string().min(5).max(25).required(),
-  newPassword: joi.string().min(5).max(25).required(),
-  confirmedNewPassword: joi.any().valid(joi.ref('newPassword')).required()
+const editUserSchema = Joi.object().keys({
+  newEmail: Joi.string().email().min(5).max(60).required(),
+  oldPassword: Joi.string().min(5).max(25).required(),
+  newPassword: Joi.string().min(5).max(25).required(),
+  confirmedNewPassword: Joi.any().valid(Joi.ref('newPassword')).required()
 })
 
 module.exports = {

@@ -9,7 +9,8 @@ class Task extends Component {
     title: this.props.task.title,
     category: this.props.task.category,
     description: this.props.task.description || '',
-    options: this.props.options
+    options: this.props.options,
+    error: undefined
   }
 
   handleInputChange = e => {
@@ -22,11 +23,13 @@ class Task extends Component {
     e.preventDefault()
     const { projectId, taskId } = this.props.match.params
     const updates = _.pick(this.state, ['title', 'category', 'description'])
-    const validData =
-      updates.title.trim().length > 2 && updates.category.trim().length > 3
-    if (validData) {
+    const isTitleValid = updates.title.trim().length > 2
+    if (isTitleValid) {
       this.props.startEditTask(updates, projectId, taskId)
       this.props.history.goBack()
+    } else {
+      const error = 'The title must be at least 3 characters.'
+      this.setState(() => ({ error }))
     }
   }
 
@@ -39,7 +42,7 @@ class Task extends Component {
   }
 
   render() {
-    const { title, category, description } = this.state
+    const { title, category, description, error } = this.state
     const { options } = this.props
     return (
       <>
@@ -71,6 +74,7 @@ class Task extends Component {
           </select>
           <button type="submit">Save</button>
         </form>
+        {error && <p>{error}</p>}
         <button onClick={this.handleDeleteButton}>delete task</button>
       </>
     )

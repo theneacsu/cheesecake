@@ -1,13 +1,13 @@
-const joi = require('joi')
+const Joi = require('joi')
 
-const createProjectSchema = joi.object().keys({
-  title: joi.string().min(3).max(100).required(),
-  description: joi.string().max(1000)
+const createProjectSchema = Joi.object().keys({
+  title: Joi.string().min(3).max(100).required(),
+  description: Joi.string().allow('').optional().max(1000)
 })
 
-const editProjectSchema = joi.object().keys({
-  newTitle: joi.string().min(5).max(100).required(),
-  newDescription: joi.string().max(1000)
+const editProjectSchema = Joi.object().keys({
+  title: Joi.string().min(3).max(100).required(),
+  description: Joi.string().allow('').optional().max(1000)
 })
 
 module.exports = {
