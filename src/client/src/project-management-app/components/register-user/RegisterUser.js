@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import validator from 'validator'
 import _ from 'lodash'
+import { Typography, TextField, Button } from '@material-ui/core'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
+import { withStyles } from '@material-ui/core'
 import { startRegister } from '../../../actions/auth/auth'
+import ownClasses from '../../../theme/AuthForm.module.css'
 
 class RegisterUser extends Component {
   state = {
@@ -50,32 +54,88 @@ class RegisterUser extends Component {
   }
 
   render() {
+    const { classes } = this.props
     return (
-      <div>
-        <h1>Create your account</h1>
+      <div className={ownClasses.wrapperDiv}>
+        <Typography color="secondary" variant="h4" className={ownClasses.title}>
+          Create your account
+        </Typography>
         <form onSubmit={this.handleFormSubmit}>
-          <input
-            type="email"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleInputChange}
-            placeholder="ex: james@bond.com"
-          />
-          <input
-            type="password"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleInputChange}
-            placeholder="type your password"
-          />
-          <input
-            type="password"
-            name="confirmedPassword"
-            value={this.state.confirmedPassword}
-            onChange={this.handleInputChange}
-            placeholder="retype your password"
-          />
-          <button>Register</button>
+          <div className={ownClasses.inputField}>
+            <TextField
+              type="email"
+              name="email"
+              value={this.state.email}
+              onChange={this.handleInputChange}
+              placeholder="ex: james@bond.com"
+              color="secondary"
+              InputLabelProps={{
+                style: {
+                  color: 'white'
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: classes.input,
+                  underline: classes.underline
+                }
+              }}
+              className={ownClasses.input}
+            />
+          </div>
+          <div className={ownClasses.inputField}>
+            <TextField
+              type="password"
+              name="password"
+              value={this.state.password}
+              onChange={this.handleInputChange}
+              placeholder="type your password"
+              color="secondary"
+              InputLabelProps={{
+                style: {
+                  color: 'white'
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: classes.input,
+                  underline: classes.underline
+                }
+              }}
+              className={ownClasses.input}
+            />
+          </div>
+          <div className={ownClasses.inputField}>
+            <TextField
+              type="password"
+              name="confirmedPassword"
+              value={this.state.confirmedPassword}
+              onChange={this.handleInputChange}
+              placeholder="retype your password"
+              color="secondary"
+              InputLabelProps={{
+                style: {
+                  color: 'white'
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: classes.input,
+                  underline: classes.underline
+                }
+              }}
+              className={ownClasses.input}
+            />
+          </div>
+          <div className={ownClasses.buttonDiv}>
+            <Button
+              type="submit"
+              style={{ fontSize: '20px' }}
+              color="secondary"
+            >
+              Register
+            </Button>
+          </div>
         </form>
         {this.state.error && <p>{this.state.error}</p>}
       </div>
@@ -91,7 +151,33 @@ const mapStateToProps = state => ({
   loginFailed: state.auth.loginFailed
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+const styles = theme => ({
+  input: {
+    color: 'white',
+    padding: '10px 0',
+    outline: 'none'
+  },
+  underline: {
+    borderBottom: '1px solid white',
+    '&:after': {
+      borderBottom: '2px solid white'
+    },
+    '&:before': {
+      borderBottom: '2px solid white'
+    },
+    '&:hover::before': {
+      display: 'none'
+    },
+    '&:hover::after': {
+      display: 'none'
+    }
+  }
+})
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  withStyles(styles)
 )(RegisterUser)

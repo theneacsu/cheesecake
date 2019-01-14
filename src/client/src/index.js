@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import ReactDOM from 'react-dom'
+import 'normalize.css'
 import * as serviceWorker from './serviceWorker'
 import store from './store/store'
 import ProjectManagementApp from './project-management-app/ProjectManagementApp'

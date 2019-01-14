@@ -1,0 +1,40 @@
+.link,
+.email {
+  text-decoration: none;
+  color: white;
+  display: inline-block;
+  padding: 1rem;
+  letter-spacing: 0.12rem;
+}
+
+.email {
+  display: inline-block;
+  font-size: 1rem;
+  text-align: center;
+  word-wrap: break-word;
+  word-break: break-all;
+  padding: 1.2rem 0;
+}
+
+.link:hover {
+  color: rgb(103, 123, 135);
+  background-color: rgb(249, 252, 255);
+  transition: all 0.3s ease-in-out;
+}
+
+.menu-item {
+  flex-grow: 1;
+}
+
+.appBar {
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 600px) {
+  .appBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+  }
+}

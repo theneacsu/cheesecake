@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
+import Header from '../project-management-app/components/header/Header'
 
 export const PublicRoute = ({
   isAuthenticated,
@@ -10,7 +11,14 @@ export const PublicRoute = ({
   <Route
     {...rest}
     component={props =>
-      isAuthenticated ? <Redirect to="/dashboard" /> : <Component {...props} />
+      isAuthenticated ? (
+        <Redirect to="/dashboard" />
+      ) : (
+        <>
+          <Header />
+          <Component {...props} />
+        </>
+      )
     }
   />
 )

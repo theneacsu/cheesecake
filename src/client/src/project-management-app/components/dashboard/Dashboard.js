@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withStyles, Typography } from '@material-ui/core'
+import { compose } from 'recompose'
 import { Link } from 'react-router-dom'
 import ProjectOverview from '../project-overview/ProjectOverview'
+import ownClasses from './Dashboard.module.css'
 
 class Dashboard extends Component {
   state = {
@@ -10,20 +13,23 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { classes, projects } = this.props
     return (
-      <div>
-        <h1>Logged in as: {this.props.auth.email}</h1>
-        <Link to={`/dashboard/projects/new`}>Create a project</Link>
-        {this.props.projects.length > 0 ? (
-          <>
-            <h2>Projects:</h2>
-            {this.props.projects.map(project => (
-              <ProjectOverview key={project._id} {...project} />
-            ))}
-          </>
+      <div className={ownClasses.wrapperDiv}>
+        {projects.length > 0 ? (
+          projects.map(project => (
+            <ProjectOverview key={project._id} {...project} />
+          ))
         ) : (
-          <p>Get started by adding a project</p>
+          <Typography className={classes.getStarted}>
+            Get started by adding a project
+          </Typography>
         )}
+        <Typography variant="h4" className={classes.newProject}>
+          <Link to={`/dashboard/projects/new`} className={ownClasses.link}>
+            Create project
+          </Link>
+        </Typography>
       </div>
     )
   }
@@ -34,4 +40,26 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps)(Dashboard)
+const styles = theme => ({
+  subtitle: {
+    color: 'white',
+    textAlign: 'center'
+  },
+  newProject: {
+    color: 'white',
+    textAlign: 'center',
+    marginTop: '4rem',
+    fontSize: '1.3rem'
+  },
+  getStarted: {
+    color: 'white',
+    textAlign: 'center',
+    margin: '5rem 0',
+    fontSize: '1.5rem'
+  }
+})
+
+export default compose(
+  connect(mapStateToProps),
+  withStyles(styles)
+)(Dashboard)
