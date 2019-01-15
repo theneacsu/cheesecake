@@ -14,8 +14,12 @@ class Dashboard extends Component {
 
   render() {
     const { classes, projects } = this.props
+    const { email } = this.state
     return (
       <div className={ownClasses.wrapperDiv}>
+        <Typography variant="h6" className={classes.email}>
+          Logged in as: {email}
+        </Typography>
         {projects.length > 0 ? (
           projects.map(project => (
             <ProjectOverview key={project._id} {...project} />
@@ -56,6 +60,14 @@ const styles = theme => ({
     textAlign: 'center',
     margin: '5rem 0',
     fontSize: '1.5rem'
+  },
+  email: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'normal',
+    [theme.breakpoints.up('lg')]: {
+      display: 'none'
+    }
   }
 })
 

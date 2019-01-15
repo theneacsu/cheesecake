@@ -7,6 +7,10 @@
   letter-spacing: 0.12rem;
 }
 
+.link {
+  border-bottom: 1px solid white;
+}
+
 .email {
   display: inline-block;
   font-size: 1rem;

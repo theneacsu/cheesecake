@@ -1,28 +1,54 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { compose } from 'recompose'
+import { Typography, Grid, withStyles } from '@material-ui/core'
 import TaskStage from '../task-stage/TaskStage'
 import { getTasksByCategory } from '../../../selectors/tasks'
 import getCurrentProject from '../../../selectors/projects'
+import ownClasses from './Project.module.css'
 
 const Project = props => {
   const { title, description } = props.project
   const projectId = props.project._id
-  const { mappedTasksStages } = props
+  const { mappedTasksStages, classes } = props
   return (
     <div>
-      <h1>{title}</h1>
-      <h3> - {description} - </h3>
-      <Link to={`/dashboard/projects/${projectId}/edit`} onClick={() => {}}>
-        Edit Project
-      </Link>
-      {mappedTasksStages.map(taskStage => (
-        <TaskStage
-          key={taskStage.category}
-          {...taskStage}
-          projectId={projectId}
-        />
-      ))}
+      <Typography variant="h3" className={classes.heading}>
+        {title}
+      </Typography>
+      {description && (
+        <Typography
+          variant="h6"
+          className={[classes.heading, classes.description].join(' ')}
+        >
+          - {description} -
+        </Typography>
+      )}
+
+      <Grid container className={classes.container}>
+        {mappedTasksStages.map(taskStage => (
+          <TaskStage
+            key={taskStage.category}
+            {...taskStage}
+            projectId={projectId}
+          />
+        ))}
+      </Grid>
+
+      <Typography
+        variant="h5"
+        className={[classes.heading, classes.button].join(' ')}
+      >
+        <Link
+          to={`/dashboard/projects/${projectId}/edit`}
+          className={[classes.link, ownClasses.link, ownClasses.button].join(
+            ' '
+          )}
+        >
+          Edit Project
+        </Link>
+      </Typography>
     </div>
   )
 }
@@ -61,4 +87,25 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-export default connect(mapStateToProps)(Project)
+const styles = theme => ({
+  heading: {
+    color: 'white',
+    textAlign: 'center'
+  },
+  link: {
+    color: 'white',
+    textDecoration: 'none'
+  },
+  button: {
+    marginTop: '4rem'
+  },
+  description: {
+    marginTop: '1.5rem',
+    fontWeight: 'normal'
+  }
+})
+
+export default compose(
+  connect(mapStateToProps),
+  withStyles(styles)
+)(Project)

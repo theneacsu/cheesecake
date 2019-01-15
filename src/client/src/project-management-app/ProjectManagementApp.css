@@ -3,15 +3,19 @@
 }
 
 html {
-  background: url("/images/main.jpg") no-repeat center center fixed;
+  /* background: url("/images/wood.jpg") no-repeat center center fixed; */
+  background-color: #e9bcb7;
+  background: linear-gradient(315deg, #e9bcb7 0%, #29524a 90%);
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: "Lato", sans-serif;
 }
 
 @-webkit-keyframes autofill {

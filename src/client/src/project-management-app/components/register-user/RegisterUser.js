@@ -158,18 +158,21 @@ const styles = theme => ({
     outline: 'none'
   },
   underline: {
-    borderBottom: '1px solid white',
     '&:after': {
-      borderBottom: '2px solid white'
+      borderBottom: '0px solid white'
     },
     '&:before': {
-      borderBottom: '2px solid white'
+      borderBottom: '0px solid white'
     },
     '&:hover::before': {
       display: 'none'
     },
     '&:hover::after': {
       display: 'none'
+    },
+    borderBottom: '2px solid white',
+    '&:hover': {
+      borderBottom: '2px solid #c9d1c4'
     }
   }
 })

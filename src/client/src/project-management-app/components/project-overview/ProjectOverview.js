@@ -14,15 +14,17 @@ const ProjectOverview = ({ title, description, _id, classes }) => (
   <div className={classes.root}>
     <ExpansionPanel className={classes.panel}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography className={classes.heading}>
+        <Typography variant="h4" className={classes.heading}>
           <Link to={`/dashboard/projects/${_id}`} className={ownClasses.link}>
-            <h1>{title}</h1>
+            {title}
           </Link>
         </Typography>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        <Typography className={classes.description}>{description}</Typography>
-      </ExpansionPanelDetails>
+      {description && (
+        <ExpansionPanelDetails>
+          <Typography className={classes.description}>{description}</Typography>
+        </ExpansionPanelDetails>
+      )}
     </ExpansionPanel>
   </div>
 )
@@ -33,8 +35,7 @@ const styles = theme => ({
     margin: '2rem auto'
   },
   heading: {
-    fontSize: '.7rem',
-    fontWeight: theme.typography.fontWeightRegular
+    color: 'white'
   },
   description: {
     color: '#37423E'

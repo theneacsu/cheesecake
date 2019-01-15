@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { startAddTask } from '../../../actions/tasks/tasks'
+import ownClasses from './CreateTask.module.css'
 
 class CreateTask extends Component {
   state = {
@@ -38,8 +39,9 @@ class CreateTask extends Component {
     const { title, error } = this.state
     return (
       <>
-        <form onSubmit={this.handleFormSubmit}>
+        <form onSubmit={this.handleFormSubmit} className={ownClasses.form}>
           <input
+            className={ownClasses.input}
             type="text"
             name="title"
             value={title}

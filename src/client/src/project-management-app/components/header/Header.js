@@ -103,7 +103,7 @@ const styles = theme => ({
     padding: '0'
   },
   displayNone: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none'
     }
   }

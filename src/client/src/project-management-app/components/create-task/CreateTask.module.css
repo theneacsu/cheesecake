@@ -1,0 +1,12 @@
+.form {
+  text-align: center;
+  margin: 1rem 0 2rem;
+}
+
+.input {
+  padding: 1rem;
+  border-radius: 4rem;
+  outline: none;
+  border: none;
+  color: #516860;
+}
