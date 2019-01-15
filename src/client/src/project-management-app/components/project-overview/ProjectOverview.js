@@ -15,7 +15,10 @@ const ProjectOverview = ({ title, description, _id, classes }) => (
     <ExpansionPanel className={classes.panel}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
         <Typography variant="h4" className={classes.heading}>
-          <Link to={`/dashboard/projects/${_id}`} className={ownClasses.link}>
+          <Link
+            to={`/dashboard/projects/${_id}`}
+            className={[ownClasses.link, classes.title].join(' ')}
+          >
             {title}
           </Link>
         </Typography>
@@ -32,16 +35,20 @@ const ProjectOverview = ({ title, description, _id, classes }) => (
 const styles = theme => ({
   root: {
     width: '80%',
-    margin: '2rem auto'
+    margin: '2rem auto',
+    maxWidth: '700px'
   },
   heading: {
     color: 'white'
   },
   description: {
-    color: '#37423E'
+    color: '#797E78'
   },
   panel: {
     backgroundColor: '#fffaef'
+  },
+  title: {
+    color: '#797E78'
   }
 })
 

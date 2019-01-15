@@ -56,7 +56,10 @@ const Header = props => {
     </div>
   ) : (
     <Typography variant="h5" color="secondary" className={classes.link}>
-      <Link to="/dashboard" className={ownClasses.link}>
+      <Link
+        to="/dashboard"
+        className={[ownClasses.link, classes.logo].join(' ')}
+      >
         Clone 57
       </Link>
     </Typography>
@@ -106,6 +109,9 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       display: 'none'
     }
+  },
+  logo: {
+    borderBottom: '1px solid white'
   }
 })
 

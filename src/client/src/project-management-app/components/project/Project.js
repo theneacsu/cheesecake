@@ -26,7 +26,7 @@ const Project = props => {
         </Typography>
       )}
 
-      <Grid container className={classes.container}>
+      <Grid container className={classes.taskStages}>
         {mappedTasksStages.map(taskStage => (
           <TaskStage
             key={taskStage.category}
@@ -97,11 +97,18 @@ const styles = theme => ({
     textDecoration: 'none'
   },
   button: {
-    marginTop: '4rem'
+    margin: '4rem 0 2rem'
   },
   description: {
     marginTop: '1.5rem',
-    fontWeight: 'normal'
+    fontWeight: 'normal',
+    [theme.breakpoints.up('lg')]: {
+      marginBottom: '2rem'
+    }
+  },
+  taskStages: {
+    maxWidth: '2400px',
+    margin: 'auto'
   }
 })
 

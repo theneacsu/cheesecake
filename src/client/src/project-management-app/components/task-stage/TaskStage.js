@@ -32,13 +32,16 @@ const styles = theme => ({
     borderBottom: '1px solid white',
     textAlign: 'center',
     width: '10rem',
+    paddingBottom: '.75rem',
     margin: '0rem auto 1rem'
   },
   box: {
-    [theme.breakpoints.up('sm')]: {
+    maxWidth: '600px',
+    margin: 'auto',
+    [theme.breakpoints.up('xs')]: {
       padding: '1rem',
       borderBottom: '1px solid white',
-      marginTop: '2rem'
+      marginTop: '1rem'
     },
     [theme.breakpoints.up('lg')]: {
       borderBottom: 'none',

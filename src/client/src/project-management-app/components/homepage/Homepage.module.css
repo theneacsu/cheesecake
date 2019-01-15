@@ -6,14 +6,18 @@
 
 .h1 {
   margin-top: 0;
-  padding-top: 20px;
+  padding-top: 1rem;
   padding-bottom: 1rem;
   font-size: 3rem;
   text-align: center;
   font-weight: normal;
   border-bottom: 1px solid white;
   width: 70%;
-  margin: auto;
+  margin: 1rem auto;
+}
+
+.h1:hover {
+  border-radius: 1rem;
 }
 
 .h2 {
@@ -44,7 +48,8 @@
   align-self: center;
 }
 
-.Link:hover {
+.Link:hover,
+.h1:hover {
   color: rgb(103, 123, 135);
   background-color: rgb(249, 252, 255);
   transition: all 0.4s ease-in-out;

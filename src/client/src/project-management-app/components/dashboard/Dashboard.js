@@ -18,17 +18,20 @@ class Dashboard extends Component {
     return (
       <div className={ownClasses.wrapperDiv}>
         <Typography variant="h6" className={classes.email}>
-          Logged in as: {email}
+          Logged in as:
+          <br /> {email}
         </Typography>
-        {projects.length > 0 ? (
-          projects.map(project => (
-            <ProjectOverview key={project._id} {...project} />
-          ))
-        ) : (
-          <Typography className={classes.getStarted}>
-            Get started by adding a project
-          </Typography>
-        )}
+        <div className={classes.projectList}>
+          {projects.length > 0 ? (
+            projects.map(project => (
+              <ProjectOverview key={project._id} {...project} />
+            ))
+          ) : (
+            <Typography className={classes.getStarted}>
+              Get started by adding a project
+            </Typography>
+          )}
+        </div>
         <Typography variant="h4" className={classes.newProject}>
           <Link to={`/dashboard/projects/new`} className={ownClasses.link}>
             Create project
@@ -52,7 +55,7 @@ const styles = theme => ({
   newProject: {
     color: 'white',
     textAlign: 'center',
-    marginTop: '4rem',
+    margin: '4rem 0 2rem',
     fontSize: '1.3rem'
   },
   getStarted: {
@@ -67,6 +70,14 @@ const styles = theme => ({
     fontWeight: 'normal',
     [theme.breakpoints.up('lg')]: {
       display: 'none'
+    },
+    fontSize: '1rem',
+    wordWrap: 'break-word',
+    wordBreak: 'break-all'
+  },
+  projectList: {
+    [theme.breakpoints.up('lg')]: {
+      marginTop: '5rem'
     }
   }
 })

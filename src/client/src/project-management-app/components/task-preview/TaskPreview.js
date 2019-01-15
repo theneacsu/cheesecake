@@ -10,7 +10,11 @@ import {
   withStyles
 } from '@material-ui/core'
 import AssignmentIcom from '@material-ui/icons/Assignment'
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn'
+import CachedIcon from '@material-ui/icons/Cached'
+import BugReportIcon from '@material-ui/icons/BugReport'
 import { startEditTask } from '../../../actions/tasks/tasks'
+import { getLabelFromCategory } from '../../../utils/category'
 
 class TaskPreview extends Component {
   handleOptionChange = e => {
@@ -34,12 +38,29 @@ class TaskPreview extends Component {
 
   render() {
     const { options, classes } = this.props
-    const { correspondingProject, _id, title } = this.props.task
+    const { correspondingProject, _id, title, category } = this.props.task
+    let icon
+    switch (category) {
+      case 'todo':
+        icon = <AssignmentIcom className={classes.icon} />
+        break
+      case 'in_progress':
+        icon = <CachedIcon className={classes.icon} />
+        break
+      case 'completed':
+        icon = <AssignmentTurnedInIcon className={classes.icon} />
+        break
+      case 'needs_rework':
+        icon = <BugReportIcon className={classes.icon} />
+        break
+      default:
+        icon = <AssignmentIcom className={classes.icon} />
+    }
     return (
       <div>
         <ListItem className={classes.listItem}>
           <div className={classes.taskContent}>
-            <AssignmentIcom className={classes.icon} />
+            {icon}
             <Link
               to={`/dashboard/projects/${correspondingProject}/${_id}`}
               className={classes.link}
@@ -57,7 +78,7 @@ class TaskPreview extends Component {
           >
             {options.map(opt => (
               <MenuItem value={opt} key={opt}>
-                {opt}
+                {getLabelFromCategory(opt)}
               </MenuItem>
             ))}
           </Select>
@@ -91,9 +112,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center'
   },
-  select: {
-    marginRight: '2rem'
-  },
+  select: {},
   link: {
     textDecoration: 'none'
   },
