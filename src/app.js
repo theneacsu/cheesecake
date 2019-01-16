@@ -23,10 +23,8 @@ app.use('/projects', projectsRoutes)
 app.use('/projects', tasksRoutes)
 
 app.get('*', (req, res) => {
-  console.log('??????')
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
-
 
 app.use(notFoundMiddleware)
 app.use(catchAllErrorsMiddleware)

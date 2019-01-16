@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch } from 'react-router-dom'
+import { BrowserRouter, Switch, Redirect } from 'react-router-dom'
 import Homepage from '../project-management-app/components/homepage/Homepage'
 import RegisterUser from '../project-management-app/components/register-user/RegisterUser'
 import Dashboard from '../project-management-app/components/dashboard/Dashboard'
@@ -19,7 +19,7 @@ const AppRouter = () => (
     <div className={ownClasses.appWrapper}>
       <Switch>
         <PublicRouteWithoutHeader path="/" exact component={Homepage} />
-        <PublicRoute path="/users/register" component={RegisterUser} />
+        <PublicRoute path="/register" exact component={RegisterUser} />
         <PublicRoute path="/login" component={LoginUser} />
         <PrivateRoute path="/dashboard" exact component={Dashboard} />
         <PrivateRoute
@@ -45,6 +45,7 @@ const AppRouter = () => (
           path="/dashboard/projects/:projectId/:taskId/edit"
           component={EditTask}
         />
+        <Redirect to="/dashboard" />
       </Switch>
     </div>
   </BrowserRouter>
