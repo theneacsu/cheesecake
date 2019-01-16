@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
+import { withStyles, TextField, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import {
   startEditProject,
   startDeleteProject
 } from '../../../actions/projects/projects'
+import ownClasses from './EditProject.module.css'
 
 class EditProject extends Component {
   state = {
@@ -35,30 +38,98 @@ class EditProject extends Component {
 
   render() {
     const { title, description, error } = this.state
-    const { startDeleteProject, project } = this.props
+    const { startDeleteProject, project, classes } = this.props
     return (
       <>
-        <form onSubmit={this.handleFormSubmit}>
-          <h1>{title}</h1>
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            name="title"
-            onChange={this.handleInputChange}
-          />
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={this.handleInputChange}
-            name="description"
-          />
-          <button>Save</button>
+        <form onSubmit={this.handleFormSubmit} className={classes.form}>
+          <Typography variant="h4" className={classes.heading}>
+            {title}
+          </Typography>
+          {error && <p className={classes.error}>{error}</p>}
+          <div>
+            <TextField
+              label="Title"
+              multiline
+              rowsMax="4"
+              value={title}
+              onChange={this.handleInputChange}
+              className={classes.input}
+              margin="normal"
+              name="title"
+              variant="outlined"
+              InputLabelProps={{
+                classes: {
+                  root: classes.cssLabel,
+                  focused: classes.cssFocused
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: [classes.cssOutlinedInput, classes.input].join(' '),
+                  focused: classes.cssFocused,
+                  notchedOutline: classes.notchedOutline
+                }
+              }}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Description"
+              multiline
+              rows="4"
+              value={description}
+              onChange={this.handleInputChange}
+              className={classes.input}
+              margin="normal"
+              variant="outlined"
+              name="description"
+              InputLabelProps={{
+                classes: {
+                  root: classes.cssLabel,
+                  focused: classes.cssFocused
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: [classes.cssOutlinedInput, classes.input].join(' '),
+                  focused: classes.cssFocused,
+                  notchedOutline: classes.notchedOutline
+                }
+              }}
+            />
+          </div>
+          <div>
+            <Typography
+              variant="h5"
+              className={[classes.heading, classes.button].join(' ')}
+            >
+              <button
+                type="submit"
+                className={[
+                  classes.link,
+                  ownClasses.link,
+                  ownClasses.saveBtn
+                ].join(' ')}
+              >
+                Save
+              </button>
+            </Typography>
+          </div>
         </form>
-        {error && <p>{error}</p>}
-        <Link to="/dashboard" onClick={() => startDeleteProject(project._id)}>
-          Delete Project
-        </Link>
+        <Typography
+          variant="h5"
+          className={[classes.heading, classes.button, classes.deleteArea].join(
+            ' '
+          )}
+        >
+          <Link
+            to="/dashboard"
+            onClick={() => startDeleteProject(project._id)}
+            className={[classes.link, ownClasses.link].join(' ')}
+          >
+            Delete Project
+          </Link>
+        </Typography>
       </>
     )
   }
@@ -76,7 +147,54 @@ const mapDispatchToProps = dispatch => ({
   startDeleteProject: id => dispatch(startDeleteProject(id))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+const styles = theme => ({
+  input: {
+    color: 'white',
+    width: '100%'
+  },
+  cssLabel: {
+    color: 'white',
+    fontSize: '1rem',
+    '&$cssFocused': {
+      color: 'white'
+    }
+  },
+  cssOutlinedInput: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: 'gray'
+    }
+  },
+  cssFocused: {},
+  notchedOutline: {
+    borderColor: 'white !important'
+  },
+  form: {
+    padding: '0 2rem',
+    margin: '1rem auto',
+    maxWidth: '500px'
+  },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+    width: '200px'
+  },
+  heading: {
+    textAlign: 'center',
+    color: 'white'
+  },
+  error: {
+    color: 'white',
+    fontStyle: 'italic'
+  },
+  deleteArea: {
+    paddingBottom: '2rem'
+  }
+})
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  withStyles(styles)
 )(EditProject)

@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { withStyles, TextField, Button } from '@material-ui/core'
+import { withStyles, TextField, Typography } from '@material-ui/core'
 import { startAddProject } from '../../../actions/projects/projects'
-import ownClasses from '../../../theme/AuthForm.module.css'
+import ownClasses from './CreateProject.module.css'
 
 class CreateProject extends Component {
   state = {
     title: '',
-    description: ''
+    description: '',
+    error: undefined
   }
 
   handleInputChange = e => {
@@ -23,14 +24,18 @@ class CreateProject extends Component {
     if (title.trim().length > 2) {
       await this.props.startAddProject({ title, description })
       this.props.history.push('/dashboard')
+    } else {
+      const error = 'The title must have at least 3 characters'
+      this.setState(() => ({ error }))
     }
   }
 
   render() {
     const { classes } = this.props
-    const { title, description } = this.state
+    const { title, description, error } = this.state
     return (
       <form onSubmit={this.handleFormSubmit} className={classes.form}>
+        {error && <p className={classes.error}>{error}</p>}
         <div>
           <TextField
             label="Title"
@@ -83,19 +88,22 @@ class CreateProject extends Component {
             }}
           />
         </div>
-        <div className={ownClasses.buttonDiv}>
-          <Button
-            type="submit"
-            style={{
-              fontSize: '20px',
-              border: '1px solid white',
-              padding: '1rem',
-              borderRadius: '10px'
-            }}
-            color="secondary"
+        <div>
+          <Typography
+            variant="h5"
+            className={[classes.heading, classes.button].join(' ')}
           >
-            Create Project
-          </Button>
+            <button
+              type="submit"
+              className={[
+                classes.link,
+                ownClasses.link,
+                ownClasses.createBtn
+              ].join(' ')}
+            >
+              Create Project
+            </button>
+          </Typography>
         </div>
       </form>
     )
@@ -131,6 +139,18 @@ const styles = theme => ({
     padding: '0 2rem',
     margin: '1rem auto',
     maxWidth: '500px'
+  },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+    width: '200px'
+  },
+  heading: {
+    textAlign: 'center'
+  },
+  error: {
+    color: 'white',
+    fontStyle: 'italic'
   }
 })
 
