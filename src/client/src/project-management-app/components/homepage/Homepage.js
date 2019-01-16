@@ -10,7 +10,7 @@ const Homepage = props => {
         Manage your personal projects more effectively
       </h2>
       <div className={ownClasses.linksArea}>
-        <Link to="/users/register" className={ownClasses.Link}>
+        <Link to="/register" className={ownClasses.Link}>
           <div className={ownClasses.linkDiv}>Register</div>
         </Link>
         <Link to="/login" className={ownClasses.Link}>
