@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
+import {
+  withStyles,
+  TextField,
+  Typography,
+  Select,
+  MenuItem,
+  InputLabel
+} from '@material-ui/core'
 import { getCurrentTask } from '../../../selectors/tasks'
 import { startEditTask, startDeleteTask } from '../../../actions/tasks/tasks'
+import { getLabelFromCategory } from '../../../utils/category'
+import ownClasses from './EditTask.module.css'
 
 class Task extends Component {
   state = {
@@ -43,40 +54,138 @@ class Task extends Component {
 
   render() {
     const { title, category, description, error } = this.state
-    const { options } = this.props
+    const { options, classes } = this.props
+    const propsCategory = this.props.task.category
+    const actualStatus = getLabelFromCategory(propsCategory)
     return (
-      <>
+      <div className={ownClasses.wrapperDiv}>
         <form onSubmit={this.handleFormSubmit}>
-          <input
-            type="text"
-            value={title}
-            placeholder="Title"
-            name="title"
-            onChange={this.handleInputChange}
-          />
-          <textarea
-            value={description}
-            placeholder="Description"
-            name="description"
-            onChange={this.handleInputChange}
-          />
-          <select
-            defaultValue={category}
+          <div>
+            <Typography
+              variant="h4"
+              className={[classes.field, classes.heading].join(' ')}
+            >
+              Edit Task
+            </Typography>
+            <TextField
+              label="Title"
+              multiline
+              rowsMax="4"
+              value={title}
+              onChange={this.handleInputChange}
+              className={classes.input}
+              margin="normal"
+              name="title"
+              variant="outlined"
+              InputLabelProps={{
+                classes: {
+                  root: classes.cssLabel,
+                  focused: classes.cssFocused
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: [classes.cssOutlinedInput, classes.input].join(' '),
+                  focused: classes.cssFocused,
+                  notchedOutline: classes.notchedOutline
+                }
+              }}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Description"
+              multiline
+              rows="4"
+              value={description}
+              onChange={this.handleInputChange}
+              className={classes.input}
+              margin="normal"
+              variant="outlined"
+              name="description"
+              InputLabelProps={{
+                classes: {
+                  root: classes.cssLabel,
+                  focused: classes.cssFocused
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: [classes.cssOutlinedInput, classes.input].join(' '),
+                  focused: classes.cssFocused,
+                  notchedOutline: classes.notchedOutline
+                }
+              }}
+            />
+          </div>
+          <InputLabel htmlFor="status" className={classes.label}>
+            Status:
+          </InputLabel>
+          <Select
+            disableUnderline={true}
+            value={category}
             name="category"
             onChange={this.handleInputChange}
+            inputProps={{
+              id: 'status'
+            }}
+            style={{ color: 'white', fontSize: '1.5rem' }}
           >
-            <option value="category">{category}</option>
+            <MenuItem key={propsCategory} value={propsCategory}>
+              {actualStatus}
+            </MenuItem>
             {options.map(opt => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
+              <MenuItem key={opt} value={opt}>
+                {getLabelFromCategory(opt)}
+              </MenuItem>
             ))}
-          </select>
-          <button type="submit">Save</button>
+          </Select>
+          <div>
+            <Typography
+              variant="h5"
+              className={[classes.heading, classes.button].join(' ')}
+            >
+              <button
+                type="submit"
+                className={[
+                  classes.link,
+                  ownClasses.link,
+                  ownClasses.saveBtn
+                ].join(' ')}
+              >
+                Save
+              </button>
+            </Typography>
+          </div>
         </form>
         {error && <p>{error}</p>}
-        <button onClick={this.handleDeleteButton}>delete task</button>
-      </>
+        <Typography
+          variant="h5"
+          className={[classes.heading, classes.editArea].join(' ')}
+        >
+          <button
+            className={[
+              classes.link,
+              ownClasses.link,
+              ownClasses.normalLink
+            ].join(' ')}
+            onClick={() => this.props.history.goBack()}
+          >
+            Go back
+          </button>
+        </Typography>
+        <Typography
+          variant="h5"
+          className={[classes.heading, classes.deleteBtnArea].join(' ')}
+        >
+          <button
+            onClick={this.handleDeleteButton}
+            className={[classes.link, ownClasses.link].join(' ')}
+          >
+            Delete
+          </button>
+        </Typography>
+      </div>
     )
   }
 }
@@ -99,7 +208,66 @@ const mapDispatchToProps = dispatch => ({
     dispatch(startDeleteTask(projectId, taskId))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+const styles = theme => ({
+  input: {
+    color: 'white',
+    width: '100%'
+  },
+  cssLabel: {
+    color: 'white',
+    fontSize: '1rem',
+    '&$cssFocused': {
+      color: 'white'
+    }
+  },
+  cssOutlinedInput: {
+    '&$cssFocused $notchedOutline': {
+      borderColor: 'gray'
+    }
+  },
+  cssFocused: {},
+  notchedOutline: {
+    borderColor: 'white !important'
+  },
+  form: {
+    padding: '0 2rem',
+    margin: '1rem auto',
+    maxWidth: '500px'
+  },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+    width: '200px'
+  },
+  heading: {
+    textAlign: 'center',
+    color: 'white'
+  },
+  error: {
+    color: 'white',
+    fontStyle: 'italic'
+  },
+  deleteArea: {
+    paddingBottom: '2rem'
+  },
+  field: {
+    color: 'white',
+    padding: '1rem 0'
+  },
+  deleteBtnArea: {
+    margin: '1rem 0'
+  },
+  label: {
+    color: 'white',
+    marginRight: '2rem',
+    fontSize: '1.5rem'
+  }
+})
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  withStyles(styles)
 )(Task)

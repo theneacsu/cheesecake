@@ -40,14 +40,14 @@ const Task = props => {
           >
             Edit
           </Link>
-          <Typography variant="h6">
-            <Link
-              to={`/dashboard/projects/${projectId}`}
-              className={ownClasses.link}
-            >
-              Go Back
-            </Link>
-          </Typography>
+        </Typography>
+        <Typography variant="h6">
+          <Link
+            to={`/dashboard/projects/${projectId}`}
+            className={ownClasses.link}
+          >
+            Go Back
+          </Link>
         </Typography>
       </div>
     </div>

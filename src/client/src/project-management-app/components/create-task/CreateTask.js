@@ -49,7 +49,13 @@ class CreateTask extends Component {
             placeholder="Add a new task..."
           />
         </form>
-        {error && <p>{error}</p>}
+        {error && (
+          <p
+            style={{ color: 'white', fontStyle: 'italic', textAlign: 'center' }}
+          >
+            {error}
+          </p>
+        )}
       </>
     )
   }

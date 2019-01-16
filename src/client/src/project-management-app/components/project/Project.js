@@ -49,6 +49,19 @@ const Project = props => {
           Edit Project
         </Link>
       </Typography>
+      <Typography
+        variant="h5"
+        className={[classes.heading, classes.button].join(' ')}
+      >
+        <Link
+          to={`/dashboard`}
+          className={[classes.link, ownClasses.link, ownClasses.button].join(
+            ' '
+          )}
+        >
+          Go Back
+        </Link>
+      </Typography>
     </div>
   )
 }
@@ -94,10 +107,11 @@ const styles = theme => ({
   },
   link: {
     color: 'white',
-    textDecoration: 'none'
+    textDecoration: 'none',
+    width: '200px'
   },
   button: {
-    margin: '4rem 0 2rem'
+    margin: '2rem 0 2rem'
   },
   description: {
     marginTop: '1.5rem',

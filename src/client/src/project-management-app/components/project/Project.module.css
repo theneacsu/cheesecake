@@ -4,6 +4,8 @@
   padding: 1.3rem;
   border: 1px solid white;
   border-radius: 10px;
+  display: block;
+  margin: auto;
 }
 
 .link:hover {

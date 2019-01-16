@@ -108,7 +108,11 @@ class LoginUser extends Component {
             </Button>
           </div>
         </form>
-        {this.state.error && <p>{this.state.error}</p>}
+        {this.state.error && (
+          <p style={{ textAlign: 'center', fontStyle: 'italic' }}>
+            {this.state.error}
+          </p>
+        )}
       </div>
     )
   }
