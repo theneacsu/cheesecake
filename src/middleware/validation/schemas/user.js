@@ -4,7 +4,7 @@ const registerUserSchema = Joi.object().keys({
   email: Joi.string()
     .email()
     .min(5)
-    .max(60)
+    .max(100)
     .required(),
   password: Joi.string()
     .min(5)
@@ -19,7 +19,7 @@ const loginUserSchema = Joi.object().keys({
   email: Joi.string()
     .email()
     .min(5)
-    .max(60)
+    .max(100)
     .required(),
   password: Joi.string()
     .min(5)

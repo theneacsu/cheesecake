@@ -45,7 +45,7 @@ const styles = theme => ({
     color: '#797E78'
   },
   panel: {
-    backgroundColor: '#fffaef'
+    backgroundColor: '#ffedfd'
   },
   title: {
     color: '#797E78'

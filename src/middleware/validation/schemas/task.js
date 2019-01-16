@@ -3,12 +3,12 @@ const Joi = require('joi')
 const createTaskSchema = Joi.object().keys({
   title: Joi.string()
     .min(3)
-    .max(60)
+    .max(250)
     .required(),
   description: Joi.string()
     .allow('')
     .optional()
-    .max(3000),
+    .max(5000),
   category: Joi.string()
     .min(4)
     .max(60)
@@ -18,11 +18,11 @@ const createTaskSchema = Joi.object().keys({
 const editTaskSchema = Joi.object().keys({
   title: Joi.string()
     .min(3)
-    .max(60),
+    .max(250),
   description: Joi.string()
     .allow('')
     .optional()
-    .max(3000),
+    .max(5000),
   category: Joi.string()
     .min(4)
     .max(60)

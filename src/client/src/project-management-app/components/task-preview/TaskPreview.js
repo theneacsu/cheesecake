@@ -105,8 +105,7 @@ const styles = theme => ({
   listItem: {
     display: 'flex',
     justifyContent: 'space-between',
-    margin: '0 0 1rem 0',
-    padding: 0
+    margin: '0 0 1rem 0'
   },
   taskContent: {
     display: 'flex',

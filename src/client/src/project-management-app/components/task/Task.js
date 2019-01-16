@@ -1,16 +1,55 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
 import { Link } from 'react-router-dom'
+import { Typography, withStyles } from '@material-ui/core'
+import { getLabelFromCategory } from '../../../utils/category'
+import ownClasses from './Task.module.css'
 
 const Task = props => {
   const { title, category, description } = props.task
   const { projectId, taskId } = props.match.params
+  const { classes } = props
+  const status = getLabelFromCategory(category)
   return (
     <div>
-      <h1>{title}</h1>
-      <h3>{category}</h3>
-      <p>{description}</p>
-      <Link to={`/dashboard/projects/${projectId}/${taskId}/edit`}>Edit</Link>
+      <Typography
+        variant="h4"
+        className={[classes.field, classes.heading, ownClasses.heading].join(
+          ' '
+        )}
+      >
+        Task Overview
+      </Typography>
+      <div className={ownClasses.wrapperDiv}>
+        <Typography variant="h5" className={[classes.field].join(' ')}>
+          Title: {title}
+        </Typography>
+        <Typography variant="h5" className={[classes.field].join(' ')}>
+          Status: {status}
+        </Typography>
+        {description && (
+          <Typography variant="h5" className={[classes.field].join(' ')}>
+            Description: {description}
+          </Typography>
+        )}
+        <Typography variant="h6">
+          <Link
+            to={`/dashboard/projects/${projectId}/${taskId}/edit`}
+            className={ownClasses.link}
+          >
+            Edit
+          </Link>
+          <Typography variant="h6">
+            <Link
+              to={`/dashboard/projects/${projectId}`}
+              className={ownClasses.link}
+            >
+              Go Back
+            </Link>
+          </Typography>
+        </Typography>
+      </div>
     </div>
   )
 }
@@ -23,4 +62,19 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-export default connect(mapStateToProps)(Task)
+const styles = theme => ({
+  field: {
+    color: 'white',
+    padding: '1rem 0'
+  },
+  heading: {
+    textAlign: 'center',
+    borderBottom: '1px solid white',
+    margin: '0 auto 1rem'
+  }
+})
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps)
+)(Task)

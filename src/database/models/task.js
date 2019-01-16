@@ -7,7 +7,7 @@ const taskSchema = new Schema({
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 50
+    maxlength: 250
   },
   category: {
     type: String,
@@ -19,7 +19,7 @@ const taskSchema = new Schema({
   description: {
     type: String,
     minlength: 3,
-    maxlength: 50
+    maxlength: 5000
   },
   correspondingProject: {
     type: Schema.Types.ObjectId,
