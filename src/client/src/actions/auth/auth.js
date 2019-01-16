@@ -37,13 +37,15 @@ const automaticLogin = () => {
   return async (dispatch, getState) => {
     const token = localStorage.getItem('token-clone57')
     const userId = localStorage.getItem('id-clone57')
-    const results = await axios.get(`/users/${userId}`, {
-      headers: { auth: token }
-    })
-    const { email, id, projects, tasks } = results.data
-    dispatch(login({ email, id, token }))
-    dispatch(setProjects(projects))
-    dispatch(setTasks(tasks))
+    if (token && userId) {
+      const results = await axios.get(`/users/${userId}`, {
+        headers: { auth: token }
+      })
+      const { email, id, projects, tasks } = results.data
+      dispatch(login({ email, id, token }))
+      dispatch(setProjects(projects))
+      dispatch(setTasks(tasks))
+    }
   }
 }
 

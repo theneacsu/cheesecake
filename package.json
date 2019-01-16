@@ -10,6 +10,7 @@
     "mongoose": "^5.4.2"
   },
   "scripts": {
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn install --prefix client && yarn run build --prefix client"
+    "heroku-postbuild": "cd src/client/ && yarn install && yarn run build",
+    "start": "node src/app.js"
   }
 }

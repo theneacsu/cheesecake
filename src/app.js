@@ -13,6 +13,7 @@ const catchAllErrorsMiddleware = require('./middleware/error/catchAllErrors')
 
 const app = express()
 
+app.use(express.static(path.join(__dirname, 'client/build')))
 app.use(express.json())
 app.use(loggerMiddleware)
 
@@ -21,16 +22,13 @@ app.use('/users', usersRoutes)
 app.use('/projects', projectsRoutes)
 app.use('/projects', tasksRoutes)
 
-if (process.env.NODE_ENV = 'production') {
-  app.use(express.static('client/build'))
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-  })
-}
+app.get('*', (req, res) => {
+  console.log('??????')
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
 
 app.use(notFoundMiddleware)
 app.use(catchAllErrorsMiddleware)
 
-const port = process.env.PORT || 1992
-
-app.listen(port, () => console.log(`Server is up and running on port ${port}`))
+app.listen(process.env.PORT || 1992, () => console.log(`Server is up and running...`))

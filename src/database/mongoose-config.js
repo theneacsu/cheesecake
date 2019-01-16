@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 
 const user = process.env.DB_USER_PROD
 const password = process.env.DB_PASSWORD_PROD
-const uri_prod = `mongodb://${user}:${password}@ds157834.mlab.com:57834/project-management-production`
+const uri_prod = `mongodb://${user}:${password}@ds157864.mlab.com:57864/project-management-production`
 
 mongoose
   .connect(
