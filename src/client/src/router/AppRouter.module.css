@@ -1,4 +1,7 @@
 .appWrapper {
   margin: 0 auto;
+  min-height: 100vh;
   padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
 }

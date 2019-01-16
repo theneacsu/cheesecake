@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import Header from '../project-management-app/components/header/Header'
+import Footer from '../project-management-app/components/footer/Footer'
 
 export const PublicRoute = ({
   isAuthenticated,
@@ -17,6 +18,7 @@ export const PublicRoute = ({
         <>
           <Header />
           <Component {...props} />
+          <Footer />
         </>
       )
     }
