@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 require('dotenv').config()
 require('./database/mongoose-config')
 
@@ -15,14 +16,17 @@ const app = express()
 app.use(express.json())
 app.use(loggerMiddleware)
 
-app.get('/', (req, res) => {
-  res.status(200).json({ works: true })
-})
-
 app.use('/', rootRoutes)
 app.use('/users', usersRoutes)
 app.use('/projects', projectsRoutes)
 app.use('/projects', tasksRoutes)
+
+if (process.env.NODE_ENV = 'production') {
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 
 app.use(notFoundMiddleware)
 app.use(catchAllErrorsMiddleware)
