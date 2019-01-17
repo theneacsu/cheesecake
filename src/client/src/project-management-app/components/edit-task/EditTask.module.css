@@ -30,7 +30,29 @@
 }
 
 .wrapperDiv {
-  max-width: 900px;
-  margin: auto;
+  max-width: 1000px;
+  margin: 0 auto;
   padding: 0 1rem;
+}
+
+.form {
+  min-width: 200px;
+}
+
+@media (min-width: 400px) {
+  .form {
+    min-width: 300px;
+  }
+}
+
+@media (min-width: 450px) {
+  .form {
+    min-width: 400px;
+  }
+}
+
+@media (min-width: 550px) {
+  .form {
+    min-width: 500px;
+  }
 }

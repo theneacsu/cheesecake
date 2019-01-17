@@ -59,7 +59,7 @@ class Task extends Component {
     const actualStatus = getLabelFromCategory(propsCategory)
     return (
       <div className={ownClasses.wrapperDiv}>
-        <form onSubmit={this.handleFormSubmit}>
+        <form onSubmit={this.handleFormSubmit} className={ownClasses.form}>
           <div>
             <Typography
               variant="h4"
@@ -97,6 +97,7 @@ class Task extends Component {
               label="Description"
               multiline
               rows="4"
+              rowsMax="8"
               value={description}
               onChange={this.handleInputChange}
               className={classes.input}

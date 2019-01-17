@@ -22,3 +22,7 @@
 .saveBtn:hover {
   background-color: #7ce7c5;
 }
+
+.wrapper {
+  margin-top: 0;
+}

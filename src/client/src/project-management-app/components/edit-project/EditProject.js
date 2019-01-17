@@ -40,7 +40,7 @@ class EditProject extends Component {
     const { title, description, error } = this.state
     const { startDeleteProject, project, classes } = this.props
     return (
-      <>
+      <div className={ownClasses.wrapper}>
         <form onSubmit={this.handleFormSubmit} className={classes.form}>
           <Typography variant="h4" className={classes.heading}>
             {title}
@@ -77,6 +77,7 @@ class EditProject extends Component {
               label="Description"
               multiline
               rows="4"
+              rowsMax="8"
               value={description}
               onChange={this.handleInputChange}
               className={classes.input}
@@ -130,7 +131,7 @@ class EditProject extends Component {
             Delete Project
           </Link>
         </Typography>
-      </>
+      </div>
     )
   }
 }
