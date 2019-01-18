@@ -23,6 +23,18 @@
   background-color: #7ce7c5;
 }
 
+.goBack {
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0rem auto 1rem;
+  width: 200px;
+}
+
+.goBack:hover {
+  background-color: white;
+  color: gray;
+}
+
 .wrapper {
   margin-top: 0;
 }

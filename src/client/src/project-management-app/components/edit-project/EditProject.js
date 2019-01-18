@@ -1,19 +1,41 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { withStyles, TextField, Typography } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import {
+  withStyles,
+  TextField,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  Slide
+} from '@material-ui/core'
 import {
   startEditProject,
   startDeleteProject
 } from '../../../actions/projects/projects'
 import ownClasses from './EditProject.module.css'
 
+function Transition(props) {
+  return <Slide direction="up" {...props} />
+}
+
 class EditProject extends Component {
   state = {
     title: this.props.project.title,
     description: this.props.project.description,
-    error: undefined
+    error: undefined,
+    open: false
+  }
+  handleClickOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
   }
 
   handleInputChange = e => {
@@ -115,6 +137,25 @@ class EditProject extends Component {
                 Save
               </button>
             </Typography>
+            <Typography
+              variant="h5"
+              className={[classes.heading, classes.button].join(' ')}
+            >
+              <button
+                className={[
+                  classes.link,
+                  ownClasses.link,
+                  ownClasses.goBack
+                ].join(' ')}
+                onClick={() =>
+                  this.props.history.push(
+                    `/dashboard/projects/${this.props.match.params.projectId}`
+                  )
+                }
+              >
+                Go back
+              </button>
+            </Typography>
           </div>
         </form>
         <Typography
@@ -123,13 +164,54 @@ class EditProject extends Component {
             ' '
           )}
         >
-          <Link
-            to="/dashboard"
-            onClick={() => startDeleteProject(project._id)}
-            className={[classes.link, ownClasses.link].join(' ')}
+          <Button
+            to="#"
+            onClick={this.handleClickOpen}
+            className={[classes.link, classes.btnDelete, ownClasses.link].join(
+              ' '
+            )}
           >
-            Delete Project
-          </Link>
+            Delete
+          </Button>
+          <Dialog
+            open={this.state.open}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-slide-title"
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle id="alert-dialog-slide-title">
+              <p
+                className={classes.dialogTitle}
+              >{`Are you sure you want to delete the project: ${title}?`}</p>
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-slide-description">
+                <strong>Once you delete it, there is no way back.</strong>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={this.handleClose}
+                color="primary"
+                className={classes.btnDialog}
+              >
+                Cancel
+              </Button>
+              <Button
+                className={classes.btnDialog}
+                onClick={() => {
+                  this.handleClose()
+                  startDeleteProject(project._id)
+                  this.props.history.push('/dashboard')
+                }}
+                color="primary"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Typography>
       </div>
     )
@@ -171,7 +253,7 @@ const styles = theme => ({
   },
   form: {
     padding: '0 2rem',
-    margin: '1rem auto',
+    margin: '1rem auto 0',
     maxWidth: '500px'
   },
   link: {
@@ -189,6 +271,28 @@ const styles = theme => ({
   },
   deleteArea: {
     paddingBottom: '2rem'
+  },
+  btnDelete: {
+    width: '200px',
+    textTransform: 'capitalize',
+    fontSize: '1.5rem',
+    fontWeight: 'normal',
+    border: '1px solid white',
+    padding: '.75rem',
+    borderRadius: '10px',
+    ' &:hover': {
+      background: '#f97272'
+    }
+  },
+  btnDialog: {
+    color: 'gray',
+    ' &:hover': {
+      background: 'gray',
+      color: 'white'
+    }
+  },
+  dialogTitle: {
+    color: '#3A5B54'
   }
 })
 

@@ -8,12 +8,23 @@ import {
   Typography,
   Select,
   MenuItem,
-  InputLabel
+  InputLabel,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  Button,
+  DialogTitle,
+  Slide
 } from '@material-ui/core'
 import { getCurrentTask } from '../../../selectors/tasks'
 import { startEditTask, startDeleteTask } from '../../../actions/tasks/tasks'
 import { getLabelFromCategory } from '../../../utils/category'
 import ownClasses from './EditTask.module.css'
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />
+}
 
 class Task extends Component {
   state = {
@@ -21,7 +32,16 @@ class Task extends Component {
     category: this.props.task.category,
     description: this.props.task.description || '',
     options: this.props.options,
-    error: undefined
+    error: undefined,
+    open: false
+  }
+
+  handleClickOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
   }
 
   handleInputChange = e => {
@@ -179,13 +199,62 @@ class Task extends Component {
           variant="h5"
           className={[classes.heading, classes.deleteBtnArea].join(' ')}
         >
-          <button
-            onClick={this.handleDeleteButton}
-            className={[classes.link, ownClasses.link].join(' ')}
+          <Button
+            to="#"
+            onClick={this.handleClickOpen}
+            className={[classes.link, classes.btnDelete, ownClasses.link].join(
+              ' '
+            )}
           >
             Delete
-          </button>
+          </Button>
         </Typography>
+        <Dialog
+          open={this.state.open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={this.handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle id="alert-dialog-slide-title">
+            <p
+              className={classes.dialogTitle}
+            >{`Are you sure you want to delete the task: ${title}?`}</p>
+            <p
+              className={classes.dialogTitle}
+            >{`The task's status: ${getLabelFromCategory(
+              this.state.category
+            )}`}</p>
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              <strong>Once you delete it, there is no way back.</strong>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={this.handleClose}
+              className={classes.btnDialog}
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button
+              className={classes.btnDialog}
+              onClick={() => {
+                this.handleClose()
+                this.handleDeleteButton()
+                this.props.history.push(
+                  `/dashboard/projects/${this.props.match.params.projectId}`
+                )
+              }}
+              color="primary"
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     )
   }
@@ -262,6 +331,29 @@ const styles = theme => ({
     color: 'white',
     marginRight: '2rem',
     fontSize: '1.5rem'
+  },
+  btnDelete: {
+    width: '200px',
+    textTransform: 'capitalize',
+    fontSize: '1.5rem',
+    fontWeight: 'normal',
+    border: '1px solid white',
+    padding: '.75rem',
+    margin: '0 0 1rem',
+    borderRadius: '10px',
+    ' &:hover': {
+      background: '#f97272'
+    }
+  },
+  btnDialog: {
+    color: 'gray',
+    ' &:hover': {
+      background: 'gray',
+      color: 'white'
+    }
+  },
+  dialogTitle: {
+    color: '#3A5B54'
   }
 })
 
