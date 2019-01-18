@@ -34,78 +34,81 @@ class CreateProject extends Component {
     const { classes } = this.props
     const { title, description, error } = this.state
     return (
-      <form onSubmit={this.handleFormSubmit} className={classes.form}>
-        {error && <p className={classes.error}>{error}</p>}
-        <div>
-          <TextField
-            label="Title"
-            multiline
-            rowsMax="4"
-            value={title}
-            onChange={this.handleInputChange}
-            className={classes.input}
-            margin="normal"
-            name="title"
-            variant="outlined"
-            InputLabelProps={{
-              classes: {
-                root: classes.cssLabel,
-                focused: classes.cssFocused
-              }
-            }}
-            InputProps={{
-              classes: {
-                root: [classes.cssOutlinedInput, classes.input].join(' '),
-                focused: classes.cssFocused,
-                notchedOutline: classes.notchedOutline
-              }
-            }}
-          />
-        </div>
-        <div>
-          <TextField
-            label="Description"
-            multiline
-            rows="4"
-            value={description}
-            onChange={this.handleInputChange}
-            className={classes.input}
-            margin="normal"
-            variant="outlined"
-            name="description"
-            InputLabelProps={{
-              classes: {
-                root: classes.cssLabel,
-                focused: classes.cssFocused
-              }
-            }}
-            InputProps={{
-              classes: {
-                root: [classes.cssOutlinedInput, classes.input].join(' '),
-                focused: classes.cssFocused,
-                notchedOutline: classes.notchedOutline
-              }
-            }}
-          />
-        </div>
-        <div>
-          <Typography
-            variant="h5"
-            className={[classes.heading, classes.button].join(' ')}
-          >
-            <button
-              type="submit"
-              className={[
-                classes.link,
-                ownClasses.link,
-                ownClasses.createBtn
-              ].join(' ')}
+      <div>
+        <form onSubmit={this.handleFormSubmit} className={classes.form}>
+          {error && <p className={classes.error}>{error}</p>}
+          <div>
+            <TextField
+              label="Title"
+              multiline
+              rowsMax="4"
+              value={title}
+              onChange={this.handleInputChange}
+              className={classes.input}
+              margin="normal"
+              name="title"
+              variant="outlined"
+              InputLabelProps={{
+                classes: {
+                  root: classes.cssLabel,
+                  focused: classes.cssFocused
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: [classes.cssOutlinedInput, classes.input].join(' '),
+                  focused: classes.cssFocused,
+                  notchedOutline: classes.notchedOutline
+                }
+              }}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Description"
+              multiline
+              rows="4"
+              rowsMax="8"
+              value={description}
+              onChange={this.handleInputChange}
+              className={classes.input}
+              margin="normal"
+              variant="outlined"
+              name="description"
+              InputLabelProps={{
+                classes: {
+                  root: classes.cssLabel,
+                  focused: classes.cssFocused
+                }
+              }}
+              InputProps={{
+                classes: {
+                  root: [classes.cssOutlinedInput, classes.input].join(' '),
+                  focused: classes.cssFocused,
+                  notchedOutline: classes.notchedOutline
+                }
+              }}
+            />
+          </div>
+          <div>
+            <Typography
+              variant="h5"
+              className={[classes.heading, classes.button].join(' ')}
             >
-              Create Project
-            </button>
-          </Typography>
-        </div>
-      </form>
+              <button
+                type="submit"
+                className={[
+                  classes.link,
+                  ownClasses.link,
+                  ownClasses.createBtn
+                ].join(' ')}
+              >
+                Create Project
+              </button>
+            </Typography>
+          </div>
+        </form>
+      </div>
     )
   }
 }
