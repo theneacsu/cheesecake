@@ -2,8 +2,7 @@ const express = require('express')
 const path = require('path')
 require('dotenv').config()
 require('./database/mongoose-config')
-
-const loggerMiddleware = require('./middleware/logger/logger')
+// const loggerMiddleware = require('./middleware/logger/logger')
 const rootRoutes = require('./routes/rootRoutes')
 const usersRoutes = require('./routes/userRoutes')
 const projectsRoutes = require('./routes/projectsRoutes')
@@ -15,7 +14,7 @@ const app = express()
 
 app.use(express.static(path.join(__dirname, 'client/build')))
 app.use(express.json())
-app.use(loggerMiddleware)
+// app.use(loggerMiddleware)
 
 app.use('/', rootRoutes)
 app.use('/users', usersRoutes)
